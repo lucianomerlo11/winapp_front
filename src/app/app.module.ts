@@ -3,16 +3,16 @@ import { BrowserModule } from '@angular/platform-browser';
 import {AppRoutingModule} from './app-routing.module';
 
 import { AppComponent } from './app.component';
-import { GestionComplejoComponent } from './componentes/gestion-complejo/gestion-complejo.component';
+import { PantallasModule } from './componentes/pantallas/pantallas.module';
 
 @NgModule({
   declarations: [
-    AppComponent,
-    GestionComplejoComponent
+    AppComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    PantallasModule
   ],
   providers: [],
   bootstrap: [AppComponent]
