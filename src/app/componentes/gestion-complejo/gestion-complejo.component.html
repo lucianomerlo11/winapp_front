@@ -1,0 +1,178 @@
+<form action="">
+    <div class="container ">
+  <div class="row mb-3">
+    <div class="col-lg-3">
+      <label for="nameInput" class="form-label">Nombre del Complejo</label>
+    </div>
+    <div class="col-lg-9">
+      <input
+        type="text"
+        class="form-control"
+        id="nameInput"
+        placeholder="Enter your name"
+      />
+    </div>
+  </div>
+  <div class="row mb-3">
+    <div class="col-lg-3">
+      <label for="inputAddress" class="form-label">Calle</label>
+    </div>
+    <div class="col-lg-9">
+      <input
+        type="text"
+        class="form-control"
+        id="nombreCalle"
+        placeholder="Calle"
+      />
+    </div>
+  </div>
+  <div class="row mb-3">
+    <div class="col-lg-3">
+      <label for="inputAddress" class="form-label">Numero</label>
+    </div>
+    <div class="col-lg-9">
+      <input
+        type="number"
+        class="form-control"
+        id="numeroCalle"
+        placeholder="1234"
+      />
+    </div>
+  </div>
+  <div class="row mb-3">
+    <div class="col-lg-3">
+      <label for="inputAddress" class="form-label">Departamento</label>
+    </div>
+    <div class="col-lg-9">
+      <input
+        type="text"
+        class="form-control"
+        id="departamento"
+        placeholder="Departamento"
+      />
+    </div>
+  </div>
+  <div class="row mb-3">
+    <div class="col-lg-3">
+      <label for="inputAddress" class="form-label">Codigo Postal</label>
+    </div>
+    <div class="col-lg-9">
+      <input
+        type="number"
+        class="form-control"
+        id="codigoPostal"
+        placeholder="1234"
+      />
+    </div>
+  </div>
+  <div class="row mb-3">
+    <div class="col-lg-3">
+      <label for="inputAddress" class="form-label">Barrio</label>
+    </div>
+    <div class="col-lg-9">
+      <input
+        type="text"
+        class="form-control"
+        id="barrio"
+        placeholder="Barrio"
+      />
+    </div>
+  </div>
+  <div class="row mb-3">
+    <div class="col-lg-3">
+        <label for="inputAddress" class="form-label">Tiene Buffet</label>
+    </div>
+    <div class="col-lg-9">
+        <select class="form-select" id="buffetSelect">
+            <option selected>Elige...</option>
+            <option value="1">Si</option>
+            <option value="2">No</option>
+        </select>
+    </div>
+  </div>
+  <div class="row mb-3">
+    <div class="col-lg-3">
+      <label for="timeInput" class="form-label">Cantidad de Mesas</label>
+    </div>
+    <div class="col-lg-9">
+        <div class="input-step step-success">
+            <button type="button" class="minus" (click)="mesadecrement()">–</button>
+            <input type="number" class="product-quantity" value="{{mesas}}" min="0" max="100" readonly>
+            <button type="button" class="plus" (click)="mesaincrement()">+</button>
+        </div>
+    </div>
+  </div>
+  <div class="row mb-3">
+    <div class="col-lg-3">
+      <label for="leaveemails" class="form-label">Cantidad de Parrillas</label>
+    </div>
+    <div class="col-lg-9">
+        <div class="input-step step-success">
+            <button type="button" class="minus" (click)="parrilladecrement()">–</button>
+            <input type="number" class="product-quantity" value="{{parrillas}}" min="0" max="100" readonly>
+            <button type="button" class="plus" (click)="parrillaincrement()">+</button>
+        </div>
+    </div>
+  </div>
+  <div class="row mb-3">
+    <div class="col-lg-3">
+      <label for="leaveemails" class="form-label">Cantidad de Baños</label>
+    </div>
+    <div class="col-lg-9">
+        <div class="input-step step-success">
+            <button type="button" class="minus" (click)="banodecrement()">–</button>
+            <input type="number" class="product-quantity" value="{{banos}}" min="0" max="100" readonly>
+            <button type="button" class="plus" (click)="banoincrement()">+</button>
+        </div>
+    </div>
+  </div>
+  <div class="row mb-3">
+    <div class="col-lg-3">
+      <label for="leaveemails" class="form-label">Cantidad de Duchas</label>
+    </div>
+    <div class="col-lg-9">
+        <div class="input-step step-success">
+            <button type="button" class="minus" (click)="duchadecrement()">–</button>
+            <input type="number" class="product-quantity" value="{{duchas}}" min="0" max="100" readonly>
+            <button type="button" class="plus" (click)="duchaincrement()">+</button>
+        </div>
+    </div>
+  </div>
+  <div class="row mb-3">
+    <div class="col-lg-3">
+        <label for="inputAddress" class="form-label">Tiene Estacionamiento</label>
+    </div>
+    <div class="col-lg-9">
+        <select class="form-select" id="estacionamientoSelect">
+            <option selected>Elige...</option>
+            <option value="1">Si</option>
+            <option value="2">No</option>
+        </select>
+    </div>
+  </div>
+  <div class="row mb-3">
+    <div class="col-lg-3">
+      <label for="contactNumber" class="form-label">Numero de Contacto</label>
+    </div>
+    <div class="col-lg-9">
+      <input
+        type="number"
+        class="form-control"
+        id="contactNumber"
+        placeholder="1234 5678901"
+      />
+    </div>
+  </div>
+  <div class="row mb-3">
+    <div class="col-lg-3">
+      <label for="meassageInput" class="form-label">Imagen</label>
+    </div>
+    <div class="col-lg-9">
+      Dropzone
+    </div>
+  </div>
+  <div class="text-end">
+    <button type="submit" class="btn btn-primary">Add Leave</button>
+  </div>
+</div>
+</form>
