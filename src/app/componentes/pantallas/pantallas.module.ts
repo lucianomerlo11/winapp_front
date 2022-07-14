@@ -8,6 +8,16 @@ import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
 // Load Icons
 import { defineLordIconElement } from 'lord-icon-element';
 import lottie from 'lottie-web';
+// Drop Zone
+import { DropzoneModule } from 'ngx-dropzone-wrapper';
+import { DROPZONE_CONFIG } from 'ngx-dropzone-wrapper';
+import { DropzoneConfigInterface } from 'ngx-dropzone-wrapper';
+
+const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface = {
+  url: 'https://httpbin.org/post',
+  maxFilesize: 50,
+  acceptedFiles: 'image/*'
+};
 
 @NgModule({
   declarations: [
@@ -18,7 +28,8 @@ import lottie from 'lottie-web';
     PantallasRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    NgbNavModule
+    NgbNavModule,
+    DropzoneModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

@@ -6,9 +6,15 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./gestion-complejo.component.scss'],
 })
 export class GestionComplejoComponent implements OnInit {
+  breadCrumbItems!: Array<{}>;
   constructor() {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.breadCrumbItems = [
+      { label: 'Forms' },
+      { label: 'File Upload', active: true }
+    ];
+  }
   // success
   mesas = 0;
   mesadecrement() {

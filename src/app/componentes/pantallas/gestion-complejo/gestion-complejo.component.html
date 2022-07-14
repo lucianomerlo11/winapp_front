@@ -15,39 +15,26 @@
                                     
                                       <span class="step-title me-2">
                                           <i class="ri-close-circle-fill step-icon me-2"></i>
-                                          Step 1
+                                          Paso 1
                                       </span>
-                                      Billing Info
+                                      Datos Generales
                                   </a>
                                   <ng-template ngbNavContent>
                                     <div>
-                                      <h5>Billing Info</h5>
-                                      <p class="text-muted">Fill all information below</p>
+                                      <h5>Datos Generales</h5>
+                                      <p class="text-muted">Complete la siguiente informacion</p>
                                     </div>
 
                                     <div>
                                         <div class="row g-3">
                                             <div class="col-sm-6">
-                                                <label for="firstName" class="form-label">First name</label>
-                                                <input type="text" class="form-control" id="firstName" placeholder="Enter First Name" value="">
+                                                <label for="firstName" class="form-label">Nombre del Complejo</label>
+                                                <input type="text" class="form-control" id="firstName" placeholder="Ingrese Nombre de Complejo" value="">
                                             </div>
 
-                                            <div class="col-sm-6">
-                                                <label for="lastName" class="form-label">Last name</label>
-                                                <input type="text" class="form-control" id="lastName" placeholder="Enter Last Name" value="">
-                                            </div>
-
-                                            <div class="col-12">
-                                                <label for="username" class="form-label">Username</label>
-                                                <div class="input-group">
-                                                    <span class="input-group-text">@</span>
-                                                    <input type="text" class="form-control" id="username" placeholder="Username">
-                                                </div>
-                                            </div>
-
-                                            <div class="col-12">
-                                                <label for="email" class="form-label">Email <span class="text-muted">(Optional)</span></label>
-                                                <input type="email" class="form-control" id="email" placeholder="Enter Email">
+                                            <div class="card">
+                                                <h4 class="card-title mb-0">Logo</h4>
+                                                <dropzone class="dropzone_sec"></dropzone>
                                             </div>
                                         </div>
                                     </div>
@@ -59,61 +46,45 @@
                                   <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
                                       <span class="step-title me-2">
                                           <i class="ri-close-circle-fill step-icon me-2"></i>
-                                          Step 2
+                                          Paso 2
                                       </span>
-                                      Address
+                                      Direccion
                                   </a>
                                   <ng-template ngbNavContent>
                                     <div>
-                                      <h5>Shipping Address</h5>
-                                      <p class="text-muted">Fill all information below</p>
+                                      <h5>Direccion del Complejo</h5>
+                                      <p class="text-muted">Ingrese datos de Direccion del complejo</p>
                                     </div>
 
                                     <div>
                                         <div class="row g-3">
-                                            <div class="col-12">
-                                                <label for="address" class="form-label">Address</label>
-                                                <input type="text" class="form-control" id="address" placeholder="1234 Main St">
-                                            </div>
-
-                                            <div class="col-12">
-                                                <label for="address2" class="form-label">Address 2 <span class="text-muted">(Optional)</span></label>
-                                                <input type="text" class="form-control" id="address2" placeholder="Apartment or suite">
-                                            </div>
-
                                             <div class="col-md-5">
-                                                <label for="country" class="form-label">Country</label>
-                                                <select class="form-select" id="country">
-                                                    <option value="">Choose...</option>
-                                                    <option>United States</option>
-                                                </select>
-                                            </div>
-
-                                            <div class="col-md-4">
-                                                <label for="state" class="form-label">State</label>
-                                                <select class="form-select" id="state">
-                                                    <option value="">Choose...</option>
-                                                    <option>California</option>
-                                                </select>
+                                                <label for="Calle" class="form-label">Calle</label>
+                                                <input type="text" class="form-control" id="Calle" placeholder="Nombre Calle">
                                             </div>
 
                                             <div class="col-md-3">
-                                                <label for="zip" class="form-label">Zip</label>
-                                                <input type="text" class="form-control" id="zip" placeholder="">
+                                                <label for="numCalle" class="form-label">Numero </label>
+                                                <input type="number" class="form-control" id="numCalle" placeholder="1234">
+                                            </div>
+
+                                            <div class="col-md-5">
+                                                <label for="cp" class="form-label">Codigo Postal</label>
+                                                <input type="number" class="form-control" id="cp" placeholder="1234">
+                                            </div>
+
+                                            <div class="col-md-4">
+                                                <label for="dpto" class="form-label">Departamento</label>
+                                                <input type="text" class="form-control" id="dpto" placeholder="Nombre Departamento">
+                                            </div>
+
+                                            <div class="col-md-3">
+                                                <label for="barrio" class="form-label">Barrio</label>
+                                                <input type="text" class="form-control" id="barrio" placeholder="">
                                             </div>
                                         </div>
 
                                         <hr class="my-4 text-muted">
-
-                                        <div class="form-check mb-2">
-                                            <input type="checkbox" class="form-check-input" id="same-address">
-                                            <label class="form-check-label" for="same-address">Shipping address is the same as my billing address</label>
-                                        </div>
-
-                                        <div class="form-check">
-                                            <input type="checkbox" class="form-check-input" id="save-info">
-                                            <label class="form-check-label" for="save-info">Save this information for next time</label>
-                                        </div>
                                     </div>
                                     <div class="d-flex align-items-start gap-3 mt-4">
                                         <button type="button" class="btn btn-light btn-label previestab" data-previous="v-pills-bill-info-tab"><i class="ri-arrow-left-line label-icon align-middle fs-16 me-2"></i> Back to Billing Info</button>
