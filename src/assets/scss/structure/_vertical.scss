@@ -751,8 +751,8 @@
 
     &[data-sidebar="dark"] {
         .navbar-menu {
-            background: $vertical-menu-bg-dark;
-            border-right: 1px solid $vertical-menu-border-dark;
+            background: #4B8001/*$vertical-menu-bg-dark*/;
+            border-right: 1px solid #4B8001/*$vertical-menu-border-dark*/;
 
             .hamburger-icon {
                 span {
@@ -867,7 +867,7 @@
 
         &[data-sidebar-size="sm"] {
             .navbar-brand-box {
-                background: $vertical-menu-bg-dark;
+                background: #4B8001/*$vertical-menu-bg-dark*/;
             }
 
             // Side menu
