@@ -1,0 +1,212 @@
+<div class="row">
+  <div class="col-xl-12">
+      <div class="card">
+          <div class="card-header">
+              <h4 class="card-title mb-0">Vertical nav Steps</h4>
+          </div><!-- end card header -->
+          <div class="card-body form-steps">
+              <form class="vertical-navs-step">
+                  <div class="row gy-5">
+                      <div class="col-lg-3">
+                          <div role="tablist" aria-orientation="vertical">
+                            <ul ngbNav #customNav="ngbNav" [activeId]="1"  class="nav flex-column custom-nav nav-pills" role="tablist">
+                              <li [ngbNavItem]="1" class="nav-item">
+                                  <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                                    
+                                      <span class="step-title me-2">
+                                          <i class="ri-close-circle-fill step-icon me-2"></i>
+                                          Paso 1
+                                      </span>
+                                      Datos Generales
+                                  </a>
+                                  <ng-template ngbNavContent>
+                                    <div>
+                                      <h5>Datos Generales</h5>
+                                      <p class="text-muted">Complete la siguiente informacion</p>
+                                    </div>
+
+                                    <div>
+                                        <div class="row g-3">
+                                            <div class="col-sm-6">
+                                                <label for="firstName" class="form-label">Nombre del Complejo</label>
+                                                <input type="text" class="form-control" id="firstName" placeholder="Ingrese Nombre de Complejo" value="">
+                                            </div>
+
+                                            <div class="card">
+                                                <h4 class="card-title mb-0">Logo</h4>
+                                                <dropzone class="dropzone_sec"></dropzone>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    
+                                  </ng-template>
+                              </li>
+                              <li [ngbNavItem]="2" class="nav-item">
+                                  <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                                      <span class="step-title me-2">
+                                          <i class="ri-close-circle-fill step-icon me-2"></i>
+                                          Paso 2
+                                      </span>
+                                      Direccion
+                                  </a>
+                                  <ng-template ngbNavContent>
+                                    <div>
+                                      <h5>Direccion del Complejo</h5>
+                                      <p class="text-muted">Ingrese datos de Direccion del complejo</p>
+                                    </div>
+
+                                    <div>
+                                        <div class="row g-3">
+                                            <div class="col-md-5">
+                                                <label for="Calle" class="form-label">Calle</label>
+                                                <input type="text" class="form-control" id="Calle" placeholder="Nombre Calle">
+                                            </div>
+
+                                            <div class="col-md-3">
+                                                <label for="numCalle" class="form-label">Numero </label>
+                                                <input type="number" class="form-control" id="numCalle" placeholder="1234">
+                                            </div>
+
+                                            <div class="col-md-5">
+                                                <label for="cp" class="form-label">Codigo Postal</label>
+                                                <input type="number" class="form-control" id="cp" placeholder="1234">
+                                            </div>
+
+                                            <div class="col-md-4">
+                                                <label for="dpto" class="form-label">Departamento</label>
+                                                <input type="text" class="form-control" id="dpto" placeholder="Nombre Departamento">
+                                            </div>
+
+                                            <div class="col-md-3">
+                                                <label for="barrio" class="form-label">Barrio</label>
+                                                <input type="text" class="form-control" id="barrio" placeholder="">
+                                            </div>
+                                        </div>
+
+                                        <hr class="my-4 text-muted">
+                                    </div>
+                                    <div class="d-flex align-items-start gap-3 mt-4">
+                                        <button type="button" class="btn btn-light btn-label previestab" data-previous="v-pills-bill-info-tab"><i class="ri-arrow-left-line label-icon align-middle fs-16 me-2"></i> Back to Billing Info</button>
+                                        <button type="button" class="btn btn-success btn-label right ms-auto nexttab
+                                nexttab" data-nexttab="v-pills-payment-tab"><i class="ri-arrow-right-line label-icon align-middle fs-16 ms-2"></i>Go to Payment</button>
+                                    </div>
+                                  </ng-template>
+                              </li>
+                              <li [ngbNavItem]="3" class="nav-item">
+                                <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                                  
+                                    <span class="step-title me-2">
+                                        <i class="ri-close-circle-fill step-icon me-2"></i>
+                                        Step 3
+                                    </span>
+                                    Payment
+                                </a>
+                                <ng-template ngbNavContent>
+                                  <div>
+                                    <h5>Payment</h5>
+                                    <p class="text-muted">Fill all information below</p>
+                                  </div>
+
+                                  <div>
+                                      <div class="my-3">
+                                          <div class="form-check form-check-inline">
+                                              <input id="credit" name="paymentMethod" type="radio" class="form-check-input" checked required>
+                                              <label class="form-check-label" for="credit">Credit card</label>
+                                          </div>
+                                          <div class="form-check form-check-inline">
+                                              <input id="debit" name="paymentMethod" type="radio" class="form-check-input" required>
+                                              <label class="form-check-label" for="debit">Debit card</label>
+                                          </div>
+                                          <div class="form-check form-check-inline">
+                                              <input id="paypal" name="paymentMethod" type="radio" class="form-check-input" required>
+                                              <label class="form-check-label" for="paypal">PayPal</label>
+                                          </div>
+                                      </div>
+
+                                      <div class="row gy-3">
+                                          <div class="col-md-12">
+                                              <label for="cc-name" class="form-label">Name on card</label>
+                                              <input type="text" class="form-control" id="cc-name" placeholder="" required>
+                                              <small class="text-muted">Full name as displayed on card</small>
+                                              <div class="invalid-feedback">
+                                                  Name on card is required
+                                              </div>
+                                          </div>
+
+                                          <div class="col-md-6">
+                                              <label for="cc-number" class="form-label">Credit card number</label>
+                                              <input type="text" class="form-control" id="cc-number" placeholder="" required>
+                                              <div class="invalid-feedback">
+                                                  Credit card number is required
+                                              </div>
+                                          </div>
+
+                                          <div class="col-md-3">
+                                              <label for="cc-expiration" class="form-label">Expiration</label>
+                                              <input type="text" class="form-control" id="cc-expiration" placeholder="" required>
+                                              <div class="invalid-feedback">
+                                                  Expiration date required
+                                              </div>
+                                          </div>
+
+                                          <div class="col-md-3">
+                                              <label for="cc-cvv" class="form-label">CVV</label>
+                                              <input type="text" class="form-control" id="cc-cvv" placeholder="" required>
+                                              <div class="invalid-feedback">
+                                                  Security code required
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </div>
+
+                                  <div class="d-flex align-items-start gap-3 mt-4">
+                                      <button type="button" class="btn btn-light btn-label previestab" data-previous="v-pills-bill-address-tab"><i class="ri-arrow-left-line label-icon align-middle fs-16 me-2"></i> Back to Shipping Info</button>
+                                      <button type="button" class="btn btn-success btn-label right ms-auto nexttab
+                              nexttab" data-nexttab="v-pills-finish-tab"><i class="ri-arrow-right-line label-icon align-middle fs-16 ms-2"></i> Order Complete</button>
+                                  </div>
+                                </ng-template>
+                              </li>
+                              <li [ngbNavItem]="4" class="nav-item">
+                                <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                                  
+                                    <span class="step-title me-2">
+                                        <i class="ri-close-circle-fill step-icon me-2"></i>
+                                        Step 4
+                                    </span>
+                                    Finish
+                                </a>
+                                <ng-template ngbNavContent>
+                                  <div class="text-center pt-4 pb-2">
+
+                                    <div class="mb-4">
+                                        <lord-icon src="https://cdn.lordicon.com/lupuorrc.json" trigger="loop" colors="primary:#0ab39c,secondary:#405189" style="width:120px;height:120px"></lord-icon>
+                                    </div>
+                                    <h5>Your Order is Completed !</h5>
+                                    <p class="text-muted">You Will receive an order confirmation email with details of your order.</p>
+                                  </div>
+                                </ng-template>
+                              </li>
+                            </ul>
+                          </div>
+                          <!-- end nav -->
+                      </div> <!-- end col-->
+                      <div class="col-lg-6">
+                          <div class="px-lg-4">
+                              <div class="tab-content">
+                                <div [ngbNavOutlet]="customNav"></div>
+                              </div>
+                              <!-- end tab content -->
+                          </div>
+                      </div>
+                      <!-- end col -->
+                  </div>
+                  <!-- end row -->
+              </form>
+          </div>
+      </div>
+      <!-- end -->
+  </div>
+  <!-- end col -->
+</div>
+<!-- end row -->

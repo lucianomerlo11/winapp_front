@@ -4,18 +4,16 @@ import { BrowserModule } from '@angular/platform-browser';
 import {AppRoutingModule} from './app-routing.module';
 
 import { AppComponent } from './app.component';
-import { GestionDeCanchaComponent } from './componentes/gestion-de-canchas/gestion-de-canchas.component';
-
+import { PantallasModule } from './componentes/pantallas/pantallas.module';
 
 @NgModule({
   declarations: [
-    AppComponent,
-    GestionDeCanchaComponent
+    AppComponent
   ],
   imports: [
     BrowserModule,
-    ReactiveFormsModule,
-    AppRoutingModule
+    AppRoutingModule,
+    PantallasModule
   ],
   providers: [],
   bootstrap: [AppComponent]

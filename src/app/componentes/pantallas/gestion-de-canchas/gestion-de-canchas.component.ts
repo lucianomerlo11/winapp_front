@@ -24,7 +24,8 @@ export class GestionDeCanchaComponent implements OnInit {
   
   // Datos para el formulario consultar canchas
   consultaPorPadel: boolean = false;
-  todasLasCanchas: any[] = []
+  todasLasCanchas: any[] = [];
+  selectTipoCancha: any[] = []
   consultarCancha(){}
   
   
@@ -46,15 +47,20 @@ export class GestionDeCanchaComponent implements OnInit {
               private imagenesServices: ImagenesService,
               private validarExtension: ValidacionesService,
               private canchasServices: CanchasService) { 
-              
-              // Creo que el formulario para consultar una cancha
+                
+                // Creo que el formulario para consultar una cancha
               this.crearFormularioConsultarCancha()
 
               // Creo el formulario para registrar una cancha
               this.crearFormularioRegistrarCancha()
-
+              
               // Desabilito el select para seleccionar un tipo de cancha en la consulta
               this.formularioConsultarCancha.controls['tipoCancha'].disable()
+
+              //Desabilito los selects de tipo de cancha y tipo de piso cuando se renderiza el formulario
+              this.formularioRegistrarCancha.controls['tipoCancha'].disable()
+              this.formularioRegistrarCancha.controls['tipoPiso'].disable()
+              
   }
   
   ngOnInit(): void {
@@ -72,6 +78,10 @@ export class GestionDeCanchaComponent implements OnInit {
   cambiarPagina(accion: string){
     this.accionABMC = accion;
   }
+
+  /**
+   * ***************LOGICA PARA CONSULRAR UNA CANCHA**********************************
+   */
   
   /**
    * METODO UTILIZADO PARA LA CONSULTA DE CANCHAS
@@ -82,13 +92,36 @@ export class GestionDeCanchaComponent implements OnInit {
    * 
    * CAMBIAR NOMBRE DEL METODO
    */
+
   obtenerDeporteParaConsultar(event: any){
     let deporte = event.target.value
-    deporte == 'PADEL' ? this.formularioConsultarCancha.controls['tipoCancha'].disable() :
-    this.canchasServices.getTipoCancha(deporte) 
+    deporte == 'PADEL' || deporte == 0 ? this.formularioConsultarCancha.controls['tipoCancha'].disable() :
+    this.formularioConsultarCancha.controls['tipoCancha'].enable()
+    this.selectTipoCancha = this.canchasServices.getTipoCancha(deporte) 
     this.todasLasCanchas = this.canchasServices.getCanchasPorDeporte(deporte)
   }
+  
+  consultarCanchasPorDeporteYTipoCancha(event: any){
+    let deporte = this.formularioConsultarCancha.value.deporte
+    let tipoCancha = event.target.value;
+    
+    tipoCancha == 0 ? this.todasLasCanchas = this.canchasServices.getCanchasPorDeporte(deporte) :
+    this.todasLasCanchas = this.canchasServices.getCanchasPorDeporteYTipoCancha(deporte, tipoCancha)
+  }
 
+  // REALIZA LA CREACION DEL FORMULARIO PARA CONSULTAR CANCHAS
+  crearFormularioConsultarCancha(){
+    this.formularioConsultarCancha = this.fb.group({
+      deporte   : ['', Validators.required],
+      tipoCancha: ['', Validators.required]
+    })
+  }
+
+  
+  /**
+   * ***************LOGICA PARA REGISTRAR UNA CANCHA****************************
+   */
+  
 
   /**
    * METODO UTILIZADO PARA LA REGISTRACION DE CANCHAS
@@ -101,39 +134,56 @@ export class GestionDeCanchaComponent implements OnInit {
    */
   getTiposCanchas(event:any){
     let deporteSeleccionado = event.target.value;
+
+    if(deporteSeleccionado == 'PADEL' || deporteSeleccionado == 0) {
+      this.formularioRegistrarCancha.controls['tipoCancha'].disable()
+    } 
+    else{
+      this.formularioRegistrarCancha.controls['tipoCancha'].enable()
+    }
+    this.formularioRegistrarCancha.controls['tipoPiso'].enable()
     this.tiposDeportes = this.canchasServices.getTipoCancha(deporteSeleccionado)
     this.tiposPisos = this.canchasServices.getTipoPiso(deporteSeleccionado)
     this.seleccionaDeportePadel = deporteSeleccionado == 'PADEL' ? false : true;
-
+    
   }
-
-  // POR EL MOMENTO ESTE METODO NO ME SIRVE
-  get fotos(){
-    return this.formularioRegistrarCancha.get('fotos') as FormArray;
-  }
+  
 
   // REALIZA LA CREACION DEL FORMULARIO PARA CREAR CANCHAS
   crearFormularioRegistrarCancha(){
     this.formularioRegistrarCancha = this.fb.group({
       deporte     : ['', Validators.required],
       tipoCancha  : ['', Validators.required],
-      tipoPiso    : [''],
+      tipoPiso    : ['', Validators.required],
       descripcion : ['', Validators.required],
-      fotos       : ['', Validators.required],
-
+      fotos       : ['', [Validators.required, this.validarExtension.extensionesDeImagenesValidas]],
     });
   }
 
-  // REALIZA LA CREACION DEL FORMULARIO PARA CONSULTAR CANCHAS
-  crearFormularioConsultarCancha(){
-    this.formularioConsultarCancha = this.fb.group({
-      deporte   : ['', Validators.required],
-      tipoCancha: ['',]
-    })
-  }
+  // VALIDACIONES REGISTRAR CANCHA
 
-  /**
-   * ESTE METODO 
+  get deporteNoValido(){
+      return this.formularioRegistrarCancha.get('deporte')?.invalid && this.formularioRegistrarCancha.get('deporte')?.touched
+    }
+
+    get tipoDeCanchaNoValida(){
+      return this.formularioRegistrarCancha.get('tipoCancha')?.invalid && this.formularioRegistrarCancha.get('tipoCancha')?.touched
+    }
+
+    get tipoDePisoNoValido(){
+      return this.formularioRegistrarCancha.get('tipoPiso')?.invalid && this.formularioRegistrarCancha.get('tipoPiso')?.touched
+    }
+    
+    get descripcionNoValida(){
+      return this.formularioRegistrarCancha.get('descripcion')?.invalid && this.formularioRegistrarCancha.get('descripcion')?.touched
+    }
+
+    get fotosNoValidas(){
+      return this.formularioRegistrarCancha.get('fotos')?.invalid && this.formularioRegistrarCancha.get('fotos')?.touched
+    }
+
+    /**
+   * ESTE METODO REGISTRA LA CANCHA INVOCANDO EL SERVICIO DE CANCHAS.SERVICE GENERANDO UN POST EN LA BASE DE DATOS
    */
   registrarCancha(){
     console.log(this.formularioRegistrarCancha)
@@ -145,27 +195,33 @@ export class GestionDeCanchaComponent implements OnInit {
     }
 
     let datosFormularios: any = this.formularioRegistrarCancha.value;
-
     this.cancha.deporte     = datosFormularios.deporte;
     this.cancha.tipoCancha  = datosFormularios.tipoCancha;
     this.cancha.tipoPiso    = datosFormularios.tipoPiso;
     this.cancha.descripcion = datosFormularios.descripcion;
     this.cancha.fotos       = this.archivos;
-    
-    console.log("Datos a enviar: ", this.cancha)
+    this.vaciarFormularioRegistrarCancha()
+}
 
-    
+  vaciarFormularioRegistrarCancha(){
+    this.formularioRegistrarCancha.reset()
+    this.archivos = []
   }
 
   /**
    * Logica para obtener y visualizar imagen
    **/
 
+
+  /**
+   * ESTE METODO CAPTURA EL ARCHIVO SELECCIONADO POR EL USUARIO Y VALIDA QUE SU EXTENSION SEA
+   * .PNG, .JPEG O .JPG. SI PASA LA VALIDACION EXTRAE LA BASE64 Y LA ALMACENA EN UN ARREGLO PARA
+   * GUARDARLAS EN LA BASE DE DATOS
+   */
   capturarImagen(event:any): any{
     const archivoCapturado = event.target.files[0];
-    console.log(archivoCapturado)
-    if(!this.validarExtension.validarExtensionImagen(archivoCapturado.name)){
-      alert("No tiene la extensión correcta")
+    if(this.validarExtension.validarExtensionImagen(archivoCapturado?.name) == false){
+      return;
     }
     else{
         this.imagenesServices.extraerBase64(archivoCapturado).then((imagen: any) => {
@@ -173,9 +229,9 @@ export class GestionDeCanchaComponent implements OnInit {
         this.archivos.push(imagen.base)
       }) 
     }
-
   }
 
+  // ESTE METODO SE ENCARGA DE ELIMINAR CADA IMAGEN QUE SE HA SELECCIONADO
   eliminarImagen(imagen: number){
     console.log(imagen)
     this.archivos.splice(imagen, 1)

@@ -6,31 +6,35 @@
           <div class="mb-3">
             <!-- Deportes -->
             <label for="deporte" class="form-label color-text">Deporte</label>
-            <select class="form-select" id="deporte" name="deporte" formControlName="deporte" (change)="getTiposCanchas($event)">
-              <option  *ngFor="let deporte of this.deportes" value="{{deporte}}">{{deporte}}</option>
+            <select class="form-select" id="deporte" name="deporte" formControlName="deporte" (change)="getTiposCanchas($event)" [class.is-invalid]="deporteNoValido">
+              <option disabled selected>Seleccione un deporte</option>
+              <option *ngFor="let deporte of this.deportes" value="{{deporte}}">{{deporte}}</option>
             </select>
-            <!-- <input type="text" class="form-control" id="deporte" name="deporte" deporte" formControlName="deporte"/> -->
+            <small *ngIf="deporteNoValido" class="text-danger">Seleccione un deporte</small>
           </div>  
-          <div class="mb-3" *ngIf="seleccionaDeportePadel">
+          <div class="mb-3">
             <!-- Tipos de cancha -->
             <label for="tipoCancha" class="form-label color-text">Tipo de cancha</label>
-            <select class="form-select" id="tipoCancha" name="tipoCancha" formControlName="tipoCancha"  >
+            <select class="form-select" id="tipoCancha" name="tipoCancha" formControlName="tipoCancha" [class.is-invalid]="tipoDeCanchaNoValida" >
+              <option  value="{{0}}" disabled selected>Seleccione un tipo de cancha</option>
               <option  *ngFor="let tipoCancha of this.tiposDeportes" value="{{tipoCancha}}">{{tipoCancha}}</option>
-            </select> 
+            </select>
+            <small  *ngIf="tipoDeCanchaNoValida" class="text-danger">Seleccione un tipo de cancha</small>
           </div>
           <div class="mb-3">
             <!-- Tipos de piso -->
             <label for="tipoPiso" class="form-label color-text">Tipo de piso</label>
-            <select class="form-select" id="tipoCancha" name="tipoPiso" formControlName="tipoPiso">
+            <select class="form-select" id="tipoCancha" name="tipoPiso" formControlName="tipoPiso" [class.is-invalid]="tipoDePisoNoValido" >
+              <option disabled selected>Seleccione tipo de piso</option>
               <option  *ngFor="let tipoPiso of this.tiposPisos" value="{{tipoPiso}}">{{tipoPiso}}</option>
             </select>  
-            <!-- <label class="form-label color-text" for="tipoPiso">Tipo piso</label>
-            <input type="text" class="form-control" id="tipoPiso" formControlName="tipoPiso"/> -->  
+            <small class="text-danger" *ngIf="tipoDePisoNoValido">Seleccione tipo de piso</small>
           </div>  
           <div class="mb-3">            
             <label for="descripcion" class="form-label color-text">Descripción</label>
             <div class="form-floating">
-              <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px" formControlName="descripcion" ></textarea>
+              <textarea class="form-control" style="height: 100px" formControlName="descripcion" [class.is-invalid]="descripcionNoValida" ></textarea>
+              <small *ngIf="descripcionNoValida" class="text-danger">Debe ingresar una descripcion</small>
             </div>
           </div>
         </div>  
@@ -39,6 +43,7 @@
           <div class="mb-3">
               <label for="imagenCancha" class="form-label color-text">Cargar fotos de cancha</label>
               <input class="form-control" type="file" id="imagenCancha" (change)="capturarImagen($event)" formControlName="fotos"/>
+              <small *ngIf="fotosNoValidas" class="text-danger">Debe ingresar al menos una imagen con formato <b>.png, .jpg o .jpeg</b></small>
           </div>
           <div class="imagenes" *ngIf="previzualizacion" formArrayName="fotos">
               <div class="mt-2 img" *ngFor="let file of this.archivos; let i = index">
@@ -56,6 +61,10 @@
     </div>
 </form>
 
+
+<!-- ------------------------ FORMULARIO DE CONSULTA -------------------- -->
+
+
 <div *ngIf="this.accionABMC == 'C'" class="container">
     <div class="row">
         <div class="col-md-12">
@@ -69,18 +78,19 @@
                     </div>
                     <div class="col-lg-3">
                       <select (change)="obtenerDeporteParaConsultar($event)"  class="form-select" aria-label=".form-select-sm example" formControlName="deporte">
-                        <option selected>Seleccione un deporte</option>
+                        <option value={{0}} disabled selected>Seleccione un deporte</option>
                         <option value="{{deporte}}" *ngFor="let deporte of this.deportes; let i=index">{{deporte}}</option>
                       </select>
                     </div>
                   </div>
                   <div class="row mb-3">
                     <div class="col-lg-3">
-                      <label for="websiteUrl" class="form-label">Tipo de cancha</label>
+                      <label class="form-label">Tipo de cancha</label>
                     </div>
                     <div class="col-lg-3">
-                      <select class="form-select" aria-label=".form-select-sm example" formControlName="tipoCancha">
-                        <option selected>Seleccione un tipo de cancha</option>
+                      <select class="form-select" aria-label=".form-select-sm example" formControlName="tipoCancha" (change)="consultarCanchasPorDeporteYTipoCancha($event)">
+                        <option value="{{0}}" disabled selected>Seleccione un tipo de cancha</option>
+                        <option value="{{tipoCancha}}" *ngFor="let tipoCancha of this.selectTipoCancha">{{tipoCancha}}</option>
                       </select>
                     </div>
                   </div>
