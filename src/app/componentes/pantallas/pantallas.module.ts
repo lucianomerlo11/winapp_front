@@ -13,6 +13,7 @@ import { ArchwizardModule } from 'angular-archwizard';
 import { DropzoneModule } from 'ngx-dropzone-wrapper';
 import { DROPZONE_CONFIG } from 'ngx-dropzone-wrapper';
 import { DropzoneConfigInterface } from 'ngx-dropzone-wrapper';
+import { BajaComplejoComponent } from './baja-complejo/baja-complejo.component';
 
 const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface = {
   url: 'https://httpbin.org/post',
@@ -22,7 +23,8 @@ const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface = {
 
 @NgModule({
   declarations: [
-    GestionComplejoComponent
+    GestionComplejoComponent,
+    BajaComplejoComponent
   ],
   imports: [
     CommonModule,
