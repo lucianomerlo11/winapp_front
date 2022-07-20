@@ -1,5 +1,5 @@
 <!-- Inicio Encabezado -->
-<form>
+<form [formGroup]="formRegistrarComplejo" (submit)="send()">
   <div class="row">
     <div class="col-xl-6">
       <div class="card">
@@ -17,7 +17,7 @@
             class="nav nav-pills progress-bar-tab custom-nav"
           >
             <aw-wizard-step>
-              <ng-template awWizardStepSymbol>
+              <ng-template awWizardStepSymbol >
                 <li class="nav-item" role="presentation">
                   <button
                     class="nav-link rounded-pill active"
@@ -31,7 +31,7 @@
                     aria-selected="true"
                   >
                     1
-                  </button>
+                </button>
                 </li>
               </ng-template>
               <div>
@@ -74,7 +74,10 @@
                       </div>
                     </div>
                     <div class="text-center">
-                      <label for="nombreComplejo" class="form-label"
+                      <label
+                        for="nombreComplejo"
+                        class="form-label"
+                        
                         >Nombre del Complejo</label
                       >
                       <input
@@ -95,6 +98,7 @@
                   class="btn btn-primary btn-label right ms-auto nexttab nexttab"
                   data-nexttab="pills-info-desc-tab"
                   awNextStep
+                  
                 >
                   <i
                     class="ri-arrow-right-line label-icon align-middle fs-16 ms-2 btn-primary"
@@ -112,100 +116,106 @@
                     class="nav-link rounded-pill"
                     data-progressbar="custom-progress-bar"
                     id="pills-info-desc-tab"
-                    data-bs-toggle="pill"
+                    xdata-bs-toggle="pill"
                     data-bs-target="#pills-info-desc"
                     type="button"
                     role="tab"
-                    aria-controls="pills-info-desc"
-                    aria-selected="false"
                   >
                     2
                   </button>
                 </li>
               </ng-template>
-              <div class="text-center">
-                <h5>Direccion del Complejo</h5>
-                <p class="text-muted">
-                  Complete los datos de Direccion del complejo
-                </p>
-              </div>
-
               <div>
-                <div class="row g-3">
-                  <div class="col-md-5">
-                    <label for="Calle" class="form-label">Calle</label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="Calle"
-                      placeholder="Nombre Calle"
-                    />
-                  </div>
+                <div class="text-center">
+                  <h5>Direccion del Complejo</h5>
+                  <p class="text-muted">
+                    Complete los datos de Direccion del complejo
+                  </p>
+                </div>
 
-                  <div class="col-md-3">
-                    <label for="numCalle" class="form-label">Numero </label>
-                    <input
-                      type="number"
-                      class="form-control"
-                      id="numCalle"
-                      placeholder="1234"
-                    />
-                  </div>
+                <div>
+                  <div class="row g-3">
+                    <div class="col-md-5">
+                      <label for="Calle" class="form-label">Calle</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="Calle"
+                        placeholder="Nombre Calle"
+                        formControlName="nombreCalle"
+                      />
+                    </div>
 
-                  <div class="col-md-5">
-                    <label for="cp" class="form-label">Codigo Postal</label>
-                    <input
-                      type="number"
-                      class="form-control"
-                      id="cp"
-                      placeholder="1234"
-                    />
-                  </div>
+                    <div class="col-md-3">
+                      <label for="numCalle" class="form-label">Numero </label>
+                      <input
+                        type="number"
+                        class="form-control"
+                        id="numCalle"
+                        placeholder="1234"
+                        formControlName="numCalle"
+                      />
+                    </div>
 
-                  <div class="col-md-4">
-                    <label for="dpto" class="form-label">Departamento</label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="dpto"
-                      placeholder="Nombre Departamento"
-                    />
-                  </div>
+                    <div class="col-md-5">
+                      <label for="cp" class="form-label">Codigo Postal</label>
+                      <input
+                        type="number"
+                        class="form-control"
+                        id="cp"
+                        placeholder="1234"
+                        formControlName="cp"
+                      />
+                    </div>
 
-                  <div class="col-md-3">
-                    <label for="barrio" class="form-label">Barrio</label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="barrio"
-                      placeholder="Nombre Barrio"
-                    />
+                    <div class="col-md-4">
+                      <label for="dpto" class="form-label">Departamento</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="dpto"
+                        placeholder="Nombre Departamento"
+                        formControlName="dpto"
+                      />
+                    </div>
+
+                    <div class="col-md-3">
+                      <label for="barrio" class="form-label">Barrio</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="barrio"
+                        placeholder="Nombre Barrio"
+                        formControlName="barrio"
+                      />
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div class="d-flex align-items-start gap-3 mt-4">
-                <button
-                  type="button"
-                  class="btn btn-link text-decoration-none btn-label previestab"
-                  data-previous="pills-gen-info-tab"
-                  awPreviousStep
-                >
-                  <i
-                    class="ri-arrow-left-line label-icon align-middle fs-16 me-2"
-                  ></i>
-                  Volver a Datos Generales
-                </button>
-                <button
-                  type="button"
-                  class="btn btn-primary btn-label right ms-auto nexttab nexttab"
-                  data-nexttab="pills-success-tab"
-                  awNextStep
-                >
-                  <i
-                    class="ri-arrow-right-line label-icon align-middle fs-16 ms-2 btn-primary"
-                  ></i
-                  >Ir al siguiente Paso
-                </button>
+                <div class="d-flex align-items-start gap-3 mt-4">
+                  <button
+                    type="button"
+                    class="btn btn-link text-decoration-none btn-label previestab"
+                    data-previous="pills-gen-info-tab"
+                    awPreviousStep
+                  >
+                    <i
+                      class="ri-arrow-left-line label-icon align-middle fs-16 me-2"
+                    ></i>
+                    Volver a Datos Generales
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-primary btn-label right ms-auto nexttab nexttab"
+                    data-nexttab="pills-success-tab"
+                    awNextStep
+                    
+                  >
+                    <i
+                      class="ri-arrow-right-line label-icon align-middle fs-16 ms-2 btn-primary"
+                    ></i
+                    >Ir al siguiente Paso
+                  </button>
+                </div>
               </div>
             </aw-wizard-step>
 
@@ -228,33 +238,36 @@
                   </button>
                 </li>
               </ng-template>
-              <div class="text-center">
-                <h5>Medio de Facturacion</h5>
-                <p class="text-muted">Complete los datos de Facturacion</p>
-              </div>
-              <div class="d-flex align-items-start gap-3 mt-4">
-                <button
-                  type="button"
-                  class="btn btn-link text-decoration-none btn-label previestab"
-                  data-previous="pills-gen-info-tab"
-                  awPreviousStep
-                >
-                  <i
-                    class="ri-arrow-left-line label-icon align-middle fs-16 me-2"
-                  ></i>
-                  Volver a Direccion
-                </button>
-                <button
-                  type="button"
-                  class="btn btn-primary btn-label right ms-auto nexttab nexttab"
-                  data-nexttab="pills-success-tab"
-                  awNextStep
-                >
-                  <i
-                    class="ri-arrow-right-line label-icon align-middle fs-16 ms-2 btn-primary"
-                  ></i
-                  >Ir al siguiente Paso
-                </button>
+              <div>
+                <div class="text-center">
+                  <h5>Medio de Facturacion</h5>
+                  <p class="text-muted">Complete los datos de Facturacion</p>
+                </div>
+                <div class="d-flex align-items-start gap-3 mt-4">
+                  <button
+                    type="button"
+                    class="btn btn-link text-decoration-none btn-label previestab"
+                    data-previous="pills-gen-info-tab"
+                    awPreviousStep
+                  >
+                    <i
+                      class="ri-arrow-left-line label-icon align-middle fs-16 me-2"
+                    ></i>
+                    Volver a Direccion
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-primary btn-label right ms-auto nexttab nexttab"
+                    data-nexttab="pills-success-tab"
+                    awNextStep
+                    
+                  >
+                    <i
+                      class="ri-arrow-right-line label-icon align-middle fs-16 ms-2 btn-primary"
+                    ></i
+                    >Ir al siguiente Paso
+                  </button>
+                </div>
               </div>
             </aw-wizard-step>
 
@@ -273,116 +286,125 @@
                     role="tab"
                     aria-controls="pills-success"
                     aria-selected="false"
+                    disabled
                   >
                     4
                   </button>
                 </li>
               </ng-template>
-              <div class="text-center">
-                <h5>Facilidades</h5>
-                <p class="text-muted">
-                  Seleccione las Facilidades del Complejo
-                </p>
-              </div>
-              <div class="row text-center">
-                <div class="col-md-3">
-                  <div
-                    class="form-check form-check-outline form-check-success mb-3"
-                  >
-                    <input
-                      class="form-check-input"
-                      type="checkbox"
-                      id="formCheckBuffet"
-                    />
-                    <label class="form-check-label" for="formCheckMesas">
-                      Tiene Buffet
-                    </label>
-                  </div>
+              <div>
+                <div class="text-center">
+                  <h5>Facilidades</h5>
+                  <p class="text-muted">
+                    Seleccione las Facilidades del Complejo
+                  </p>
                 </div>
+                <div class="row text-center">
+                  <div class="col-md-3">
+                    <div
+                      class="form-check form-check-outline form-check-success mb-3"
+                    >
+                      <input
+                        class="form-check-input"
+                        type="checkbox"
+                        id="formCheckBuffet"
+                        formControlName="buffet"
+                      />
+                      <label class="form-check-label" for="formCheckBuffet">
+                        Tiene Buffet
+                      </label>
+                    </div>
+                  </div>
 
-                <div class="col-md-3">
-                  <div
-                    class="form-check form-check-outline form-check-success mb-3"
-                  >
-                    <input
-                      class="form-check-input"
-                      type="checkbox"
-                      id="formCheckMesas"
-                    />
-                    <label class="form-check-label" for="formCheckMesas">
-                      Tiene Mesas
-                    </label>
+                  <div class="col-md-3">
+                    <div
+                      class="form-check form-check-outline form-check-success mb-3"
+                    >
+                      <input
+                        class="form-check-input"
+                        type="checkbox"
+                        id="formCheckMesas"
+                        formControlName="mesas"
+                      />
+                      <label class="form-check-label" for="formCheckMesas">
+                        Tiene Mesas
+                      </label>
+                    </div>
                   </div>
-                </div>
 
-                <div class="col-md-3">
-                  <div
-                    class="form-check form-check-outline form-check-success mb-3"
-                  >
-                    <input
-                      class="form-check-input"
-                      type="checkbox"
-                      id="formCheckParrillas"
-                    />
-                    <label class="form-check-label" for="formCheckParilla">
-                      Tiene Parrillas
-                    </label>
+                  <div class="col-md-3">
+                    <div
+                      class="form-check form-check-outline form-check-success mb-3"
+                    >
+                      <input
+                        class="form-check-input"
+                        type="checkbox"
+                        id="formCheckParrillas"
+                        formControlName="parrillas"
+                      />
+                      <label class="form-check-label" for="formCheckParillas">
+                        Tiene Parrillas
+                      </label>
+                    </div>
                   </div>
-                </div>
 
-                <div class="col-md-3">
-                  <div
-                    class="form-check form-check-outline form-check-success mb-3"
-                  >
-                    <input
-                      class="form-check-input"
-                      type="checkbox"
-                      id="formCheckBanos"
-                    />
-                    <label class="form-check-label" for="formCheckBanos">
-                      Tiene Baños
-                    </label>
+                  <div class="col-md-3">
+                    <div
+                      class="form-check form-check-outline form-check-success mb-3"
+                    >
+                      <input
+                        class="form-check-input"
+                        type="checkbox"
+                        id="formCheckBanos"
+                        formControlName="banos"
+                      />
+                      <label class="form-check-label" for="formCheckBanos">
+                        Tiene Baños
+                      </label>
+                    </div>
                   </div>
-                </div>
 
-                <div class="col-md-3">
-                  <div
-                    class="form-check form-check-outline form-check-success mb-3"
-                  >
-                    <input
-                      class="form-check-input"
-                      type="checkbox"
-                      id="formCheckDuchas"
-                    />
-                    <label class="form-check-label" for="formCheckDuchas">
-                      Tiene Duchas
-                    </label>
+                  <div class="col-md-3">
+                    <div
+                      class="form-check form-check-outline form-check-success mb-3"
+                    >
+                      <input
+                        class="form-check-input"
+                        type="checkbox"
+                        id="formCheckDuchas"
+                        formControlName="duchas"
+                      />
+                      <label class="form-check-label" for="formCheckDuchas">
+                        Tiene Duchas
+                      </label>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div class="d-flex align-items-start gap-3 mt-4">
-                <button
-                  type="button"
-                  class="btn btn-link text-decoration-none btn-label previestab"
-                  data-previous="pills-gen-info-tab"
-                  awPreviousStep
-                >
-                  <i
-                    class="ri-arrow-left-line label-icon align-middle fs-16 me-2"
-                  ></i>
-                  Volver a Facturacion
-                </button>
-                <button
-                  type="button"
-                  class="btn btn-primary btn-label right ms-auto nexttab nexttab"
-                  data-nexttab="pills-success-tab"
-                  awNextStep
-                >
-                  <i
-                    class="ri-arrow-right-line label-icon align-middle fs-16 ms-2 btn-primary"
-                  ></i
-                  >Finalizar
-                </button>
+                <div class="d-flex align-items-start gap-3 mt-4">
+                  <button
+                    type="button"
+                    class="btn btn-link text-decoration-none btn-label previestab"
+                    data-previous="pills-gen-info-tab"
+                    awPreviousStep
+                  >
+                    <i
+                      class="ri-arrow-left-line label-icon align-middle fs-16 me-2"
+                    ></i>
+                    Volver a Facturacion
+                  </button>
+                  <button
+                    type="sumbit"
+                    class="btn btn-primary btn-label right ms-auto nexttab nexttab"
+                    data-nexttab="pills-success-tab"
+                    awNextStep
+                    [disabled]="formRegistrarComplejo.invalid"
+                  >
+                    <i
+                      class="ri-arrow-right-line label-icon align-middle fs-16 ms-2 btn-primary"
+                    ></i
+                    >Finalizar
+                  </button>
+                </div>
               </div>
             </aw-wizard-step>
 
@@ -425,6 +447,7 @@
         <!-- end card body -->
       </div>
       <!-- end card -->
+      
     </div>
     <!-- end col -->
   </div>

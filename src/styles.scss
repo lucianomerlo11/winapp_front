@@ -5,6 +5,11 @@
     border-color: #7FCB16 !important;
 }
 
+.btn-primary:disabled{
+    background-color: grey !important;
+    border-color: grey!important;
+}
+
 .btn-secondary{
     color: #fff !important;
     background-color: #4F21CC !important;

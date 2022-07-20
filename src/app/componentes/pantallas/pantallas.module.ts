@@ -3,6 +3,9 @@ import { CommonModule } from '@angular/common';
 
 import { PantallasRoutingModule } from './pantallas-routing.module';
 import { GestionComplejoComponent } from './gestion-complejo/gestion-complejo.component';
+import { BajaComplejoComponent } from './baja-complejo/baja-complejo.component';
+import { ModificarComplejoComponent } from './modificar-complejo/modificar-complejo.component';
+
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
 // Load Icons
@@ -13,7 +16,7 @@ import { ArchwizardModule } from 'angular-archwizard';
 import { DropzoneModule } from 'ngx-dropzone-wrapper';
 import { DROPZONE_CONFIG } from 'ngx-dropzone-wrapper';
 import { DropzoneConfigInterface } from 'ngx-dropzone-wrapper';
-import { BajaComplejoComponent } from './baja-complejo/baja-complejo.component';
+
 
 const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface = {
   url: 'https://httpbin.org/post',
@@ -24,7 +27,8 @@ const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface = {
 @NgModule({
   declarations: [
     GestionComplejoComponent,
-    BajaComplejoComponent
+    BajaComplejoComponent,
+    ModificarComplejoComponent
   ],
   imports: [
     CommonModule,
