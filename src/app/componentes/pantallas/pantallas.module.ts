@@ -12,6 +12,7 @@ import lottie from 'lottie-web';
 import { DropzoneModule } from 'ngx-dropzone-wrapper';
 import { DROPZONE_CONFIG } from 'ngx-dropzone-wrapper';
 import { DropzoneConfigInterface } from 'ngx-dropzone-wrapper';
+import { GestionarUsuarioComponent } from './gestionar-usuario/gestionar-usuario.component';
 
 const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface = {
   url: 'https://httpbin.org/post',
@@ -21,7 +22,8 @@ const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface = {
 
 @NgModule({
   declarations: [
-    GestionComplejoComponent
+    GestionComplejoComponent,
+    GestionarUsuarioComponent
   ],
   imports: [
     CommonModule,
