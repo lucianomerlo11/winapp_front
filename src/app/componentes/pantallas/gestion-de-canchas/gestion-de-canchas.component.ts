@@ -1,10 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-// import { DomSanitizer } from '@angular/platform-browser';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CanchaModel } from 'src/app/modelos/cancha.model';
 import { CanchasService } from 'src/app/servicios/canchas.service';
 import { ImagenesService } from 'src/app/servicios/imagenes.service';
 import { ValidacionesService } from 'src/app/servicios/validaciones.service';
+import { ActivatedRoute } from '@angular/router';
+import { DeportesService } from 'src/app/servicios/deportes.service';
+import { TipoCanchaService } from 'src/app/servicios/tipo-cancha.service';
+import { TipoCanchaModel } from 'src/app/modelos/tipoCancha.model';
+import { TipoPisoService } from 'src/app/servicios/tipo-piso.service';
+import { TipoPisoModel } from 'src/app/modelos/tipoPiso.model';
 
 @Component({
   selector: 'app-gestion-de-canchas',
@@ -17,6 +22,7 @@ export class GestionDeCanchaComponent implements OnInit {
   // Atributo para cambio de pagina
   accionABMC: string = 'C';
 
+  idComplejo: any;
 
   
   // Formulario para consultar las canchas del complejo
@@ -34,10 +40,10 @@ export class GestionDeCanchaComponent implements OnInit {
   
   // Datos para el formulario registrar una cancha
   seleccionaDeportePadel: boolean = true;
-  cancha = new CanchaModel();
-  deportes!: string[];
-  tiposDeportes!: string[];
-  tiposPisos!: string[];
+  // cancha = new CanchaModel();
+  deportes!: any[];
+  tiposCancha!: TipoCanchaModel[];
+  tiposPisos!: TipoPisoModel[];
 
   //Atributos para trabajar con imagenes
   public archivos: string[] = []; 
@@ -46,28 +52,40 @@ export class GestionDeCanchaComponent implements OnInit {
   constructor(private fb: FormBuilder,
               private imagenesServices: ImagenesService,
               private validarExtension: ValidacionesService,
-              private canchasServices: CanchasService) { 
+              private canchasServices: CanchasService,
+              private deportesServices: DeportesService,
+              private tiposCanchasServices: TipoCanchaService,
+              private tiposPisosServices: TipoPisoService,
+              private router: ActivatedRoute) { 
                 
-                // Creo que el formulario para consultar una cancha
-              this.crearFormularioConsultarCancha()
+            this.router.params.subscribe(parametro => {
+              this.idComplejo = parametro
+            })
 
-              // Creo el formulario para registrar una cancha
-              this.crearFormularioRegistrarCancha()
-              
-              // Desabilito el select para seleccionar un tipo de cancha en la consulta
-              this.formularioConsultarCancha.controls['tipoCancha'].disable()
-
-              //Desabilito los selects de tipo de cancha y tipo de piso cuando se renderiza el formulario
-              this.formularioRegistrarCancha.controls['tipoCancha'].disable()
-              this.formularioRegistrarCancha.controls['tipoPiso'].disable()
+            // Creo que el formulario para consultar una cancha
+            this.crearFormularioConsultarCancha()
+            // Creo el formulario para registrar una cancha
+            this.crearFormularioRegistrarCancha()
+            
+            // Desabilito el select para seleccionar un tipo de cancha en la consulta
+            this.formularioConsultarCancha.controls['tipoCancha'].disable()
+            //Desabilito los selects de tipo de cancha y tipo de piso cuando se renderiza el formulario
+            this.formularioRegistrarCancha.controls['tipoCancha'].disable()
+            this.formularioRegistrarCancha.controls['tipoPiso'].disable()
               
   }
   
   ngOnInit(): void {
       // Realizo la carga del select para la selección de deportes
-      this.deportes = this.canchasServices.getDeportes();
+      this.deportesServices.getDeportes().subscribe(resp => {
+        
+        this.deportes = resp
+      })
       // Realizo una carga de todas las canchas del complejo sin realizar filtros
-      this.todasLasCanchas = this.canchasServices.getCanchas()
+      this.canchasServices.getCanchas(this.idComplejo).subscribe(resp => {
+  
+        this.todasLasCanchas = resp
+      })
   }
 
   /**
@@ -89,24 +107,39 @@ export class GestionDeCanchaComponent implements OnInit {
    * Este metodo realiza la consulta de las canchas por deporte de acuerdo a la seleccion
    * del select por deporte, tambien desactiva el select de tipo de cancha si el deporte
    * es PADEL
-   * 
-   * CAMBIAR NOMBRE DEL METODO
    */
 
-  obtenerDeporteParaConsultar(event: any){
+  consultarCanchasPorDeporte(event: any){
+    
     let deporte = event.target.value
-    deporte == 'PADEL' || deporte == 0 ? this.formularioConsultarCancha.controls['tipoCancha'].disable() :
+    let nuevasCanchas: any[] = [];
+    deporte == 0 ? this.formularioConsultarCancha.controls['tipoCancha'].disable() :
     this.formularioConsultarCancha.controls['tipoCancha'].enable()
-    this.selectTipoCancha = this.canchasServices.getTipoCancha(deporte) 
-    this.todasLasCanchas = this.canchasServices.getCanchasPorDeporte(deporte)
+    
+    this.tiposCanchasServices.getTipoCanchaByDeporte(deporte).subscribe(resp =>{
+      this.selectTipoCancha = resp
+    })
+    nuevasCanchas = this.todasLasCanchas.filter(cancha => cancha.tipoCancha.deporte.id_deporte == deporte)
+    if (nuevasCanchas.length > 0) {
+      this.todasLasCanchas = nuevasCanchas
+    }
   }
   
-  consultarCanchasPorDeporteYTipoCancha(event: any){
+  consultarCanchasPorTipoDeCancha(event: any){
     let deporte = this.formularioConsultarCancha.value.deporte
     let tipoCancha = event.target.value;
+    let resultadoCancha: any[] = []
+
+    resultadoCancha = this.todasLasCanchas.filter(cancha => 
+      cancha.tipoCancha.deporte.id_deporte == deporte && 
+      cancha.tipoCancha.id_tipo_cancha  == tipoCancha)
     
-    tipoCancha == 0 ? this.todasLasCanchas = this.canchasServices.getCanchasPorDeporte(deporte) :
-    this.todasLasCanchas = this.canchasServices.getCanchasPorDeporteYTipoCancha(deporte, tipoCancha)
+      if (resultadoCancha.length > 0) {
+        this.todasLasCanchas = resultadoCancha
+  
+      }else{
+  
+      }
   }
 
   // REALIZA LA CREACION DEL FORMULARIO PARA CONSULTAR CANCHAS
@@ -135,15 +168,25 @@ export class GestionDeCanchaComponent implements OnInit {
   getTiposCanchas(event:any){
     let deporteSeleccionado = event.target.value;
 
-    if(deporteSeleccionado == 'PADEL' || deporteSeleccionado == 0) {
+    //cambiar este bloque
+    if(deporteSeleccionado == 0) {
       this.formularioRegistrarCancha.controls['tipoCancha'].disable()
     } 
     else{
       this.formularioRegistrarCancha.controls['tipoCancha'].enable()
     }
+    //cambiar este bloque
     this.formularioRegistrarCancha.controls['tipoPiso'].enable()
-    this.tiposDeportes = this.canchasServices.getTipoCancha(deporteSeleccionado)
-    this.tiposPisos = this.canchasServices.getTipoPiso(deporteSeleccionado)
+    this.tiposCanchasServices.getTipoCanchaByDeporte(deporteSeleccionado).subscribe(resp => {
+        this.tiposCancha = resp	
+    }) 
+    
+    this.tiposPisosServices.getTiposDePiso().subscribe(resp => {
+      
+      this.tiposPisos = resp
+    })
+
+   // this.tiposPisos = this.canchasServices.getTipoPiso(deporteSeleccionado)
     this.seleccionaDeportePadel = deporteSeleccionado == 'PADEL' ? false : true;
     
   }
@@ -186,7 +229,6 @@ export class GestionDeCanchaComponent implements OnInit {
    * ESTE METODO REGISTRA LA CANCHA INVOCANDO EL SERVICIO DE CANCHAS.SERVICE GENERANDO UN POST EN LA BASE DE DATOS
    */
   registrarCancha(){
-    console.log(this.formularioRegistrarCancha)
 
     if (this.formularioRegistrarCancha.invalid) {
       return Object.values(this.formularioRegistrarCancha.controls).forEach(control => {
@@ -194,13 +236,26 @@ export class GestionDeCanchaComponent implements OnInit {
       });    
     }
 
+    const {id} = this.idComplejo
     let datosFormularios: any = this.formularioRegistrarCancha.value;
-    this.cancha.deporte     = datosFormularios.deporte;
-    this.cancha.tipoCancha  = datosFormularios.tipoCancha;
-    this.cancha.tipoPiso    = datosFormularios.tipoPiso;
-    this.cancha.descripcion = datosFormularios.descripcion;
-    this.cancha.fotos       = this.archivos;
-    this.vaciarFormularioRegistrarCancha()
+
+    const {descripcion, fotos, tipoCancha, tipoPiso} = datosFormularios
+
+    const cancha:CanchaModel = {
+      descripcion: descripcion,
+      foto: null,
+      tipoCancha: {id_tipo_cancha: parseInt(tipoCancha)},
+      tipoPiso: {id_tipo_piso: parseInt(tipoPiso)},
+      estadoCancha: {id_estado_cancha: 1},
+      complejo: {id_complejo: id},
+      esActivo: true
+    }
+    
+
+    this.canchasServices.registarCanchaRequest(cancha).subscribe(resp => {
+
+    })
+    //this.vaciarFormularioRegistrarCancha()
 }
 
   vaciarFormularioRegistrarCancha(){
@@ -233,7 +288,6 @@ export class GestionDeCanchaComponent implements OnInit {
 
   // ESTE METODO SE ENCARGA DE ELIMINAR CADA IMAGEN QUE SE HA SELECCIONADO
   eliminarImagen(imagen: number){
-    console.log(imagen)
     this.archivos.splice(imagen, 1)
   }
 

@@ -8,7 +8,7 @@
             <label for="deporte" class="form-label color-text">Deporte</label>
             <select class="form-select" id="deporte" name="deporte" formControlName="deporte" (change)="getTiposCanchas($event)" [class.is-invalid]="deporteNoValido">
               <option disabled selected>Seleccione un deporte</option>
-              <option *ngFor="let deporte of this.deportes" value="{{deporte}}">{{deporte}}</option>
+              <option *ngFor="let deporte of this.deportes" value="{{deporte.id_deporte}}">{{deporte.nombre}}</option>
             </select>
             <small *ngIf="deporteNoValido" class="text-danger">Seleccione un deporte</small>
           </div>  
@@ -17,7 +17,7 @@
             <label for="tipoCancha" class="form-label color-text">Tipo de cancha</label>
             <select class="form-select" id="tipoCancha" name="tipoCancha" formControlName="tipoCancha" [class.is-invalid]="tipoDeCanchaNoValida" >
               <option  value="{{0}}" disabled selected>Seleccione un tipo de cancha</option>
-              <option  *ngFor="let tipoCancha of this.tiposDeportes" value="{{tipoCancha}}">{{tipoCancha}}</option>
+              <option  *ngFor="let tipoCancha of this.tiposCancha" value="{{tipoCancha.id_tipo_cancha}}">{{tipoCancha.descripcion}}</option>
             </select>
             <small  *ngIf="tipoDeCanchaNoValida" class="text-danger">Seleccione un tipo de cancha</small>
           </div>
@@ -26,7 +26,7 @@
             <label for="tipoPiso" class="form-label color-text">Tipo de piso</label>
             <select class="form-select" id="tipoCancha" name="tipoPiso" formControlName="tipoPiso" [class.is-invalid]="tipoDePisoNoValido" >
               <option disabled selected>Seleccione tipo de piso</option>
-              <option  *ngFor="let tipoPiso of this.tiposPisos" value="{{tipoPiso}}">{{tipoPiso}}</option>
+              <option  *ngFor="let tipoPiso of this.tiposPisos" value="{{tipoPiso.id_tipo_piso}}">{{tipoPiso.nombre}}</option>
             </select>  
             <small class="text-danger" *ngIf="tipoDePisoNoValido">Seleccione tipo de piso</small>
           </div>  
@@ -77,9 +77,9 @@
                       <label for="nameInput" class="form-label">Deporte</label>
                     </div>
                     <div class="col-lg-3">
-                      <select (change)="obtenerDeporteParaConsultar($event)"  class="form-select" aria-label=".form-select-sm example" formControlName="deporte">
+                      <select (change)="consultarCanchasPorDeporte($event)"  class="form-select" aria-label=".form-select-sm example" formControlName="deporte">
                         <option value={{0}} disabled selected>Seleccione un deporte</option>
-                        <option value="{{deporte}}" *ngFor="let deporte of this.deportes; let i=index">{{deporte}}</option>
+                        <option value="{{deporte.id_deporte}}" *ngFor="let deporte of this.deportes">{{deporte.nombre}}</option>
                       </select>
                     </div>
                   </div>
@@ -88,9 +88,9 @@
                       <label class="form-label">Tipo de cancha</label>
                     </div>
                     <div class="col-lg-3">
-                      <select class="form-select" aria-label=".form-select-sm example" formControlName="tipoCancha" (change)="consultarCanchasPorDeporteYTipoCancha($event)">
+                      <select class="form-select" aria-label=".form-select-sm example" formControlName="tipoCancha" (change)="consultarCanchasPorTipoDeCancha($event)">
                         <option value="{{0}}" disabled selected>Seleccione un tipo de cancha</option>
-                        <option value="{{tipoCancha}}" *ngFor="let tipoCancha of this.selectTipoCancha">{{tipoCancha}}</option>
+                        <option value="{{tipoCancha.id_tipo_cancha}}" *ngFor="let tipoCancha of this.selectTipoCancha">{{tipoCancha.descripcion}}</option>
                       </select>
                     </div>
                   </div>
@@ -108,11 +108,11 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr *ngFor="let canchasComplejo of this.todasLasCanchas; let i = index">
-                      <td style="text-align: center;">{{canchasComplejo.idCancha}}</td>
-                      <td style="text-align: center;">{{canchasComplejo.deporte}}</td>
-                      <td style="text-align: center;">{{canchasComplejo.tipoCancha}}</td>
-                      <td style="text-align: center;">{{canchasComplejo.estado}}</td>
+                    <tr *ngFor="let canchasComplejo of this.todasLasCanchas">
+                      <td style="text-align: center;">{{canchasComplejo.id_cancha}}</td>
+                      <td style="text-align: center;">{{canchasComplejo.tipoCancha.deporte.nombre}}</td>
+                      <td style="text-align: center;">{{canchasComplejo.tipoCancha.descripcion}}</td>
+                      <td style="text-align: center;">{{canchasComplejo.estadoCancha.nombre_estado}}</td>
                       <td style="text-align: center;">
                         <button type="button" class="btn btn-outline-danger" >Dar de baja</button>
                       </td>

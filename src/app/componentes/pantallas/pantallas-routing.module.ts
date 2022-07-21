@@ -5,7 +5,7 @@ import { GestionDeCanchaComponent } from './gestion-de-canchas/gestion-de-cancha
 
 const routes: Routes = [
   { path:"gestionComplejo" , component:GestionComplejoComponent},
-  { path:"mis-canchas", component: GestionDeCanchaComponent}
+  { path:"mis-canchas/:id", component: GestionDeCanchaComponent}
 ];
 
 @NgModule({

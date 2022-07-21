@@ -1,67 +1,42 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http'
+import { CanchaModel } from '../modelos/cancha.model';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CanchasService {
 
-  canchas: any[] = [
-    {
-      idCancha    : '1',
-      deporte     : 'FUTBOL',
-      tipoCancha  : 'FUTBOL 5',
-      tipoPiso    : 'CESPED SINTETICO',
-      estado      : 'DISPONIBLE',
-      fotos       : ['FOTO 1', 'FOTO 2'] 
-    },
-    {
-      idCancha    : '2',
-      deporte     : 'FUTBOL',
-      tipoCancha  : 'FUTBOL 7',
-      tipoPiso    : 'CESPED SINTETICO',
-      estado      : 'DISPONIBLE',
-      fotos       : ['FOTO 1', 'FOTO 2'] 
-    },
-    {
-      idCancha    : '3',
-      deporte     : 'BASQUET',
-      tipoCancha  : 'BASQUET 5',
-      tipoPiso    : 'PARQUET',
-      estado      : 'DISPONIBLE',
-      fotos       : ['FOTO 1', 'FOTO 2'] 
-    }
-  ]
+  constructor(private http: HttpClient) { }
 
-  constructor() { }
 
-  getDeportes(){
-    return ['FUTBOL', 'BASQUET', 'PADEL']
+
+  getCanchas(idComplejo: any){
+    const {id} = idComplejo
+    return this.http.get(`http://localhost:8080/cancha/getbycomplejo/${id}`)
+      .pipe(
+        map( resp => this.crearArregloCanchas(resp) )
+      )
   }
 
-  getTipoCancha(deporte: string){
-    return deporte == 'FUTBOL'  ? ['FUTBOL 5', 'FUTBOL 7', 'FUTBOL 9', 'FUTBOL 11'] :
-           deporte == 'BASQUET' ? ['BASQUET 3', 'BASQUET 4','BASQUET 5'] : 
-           ['SIN SELECCION']
+  crearArregloCanchas(canchasObj: object){
+    const canchas: CanchaModel[] = []
+
+    if (canchasObj === null) {return [];}
+
+    Object.keys(canchasObj).forEach(key => {
+      const cancha: CanchaModel = canchasObj[key];
+      canchas.push(cancha)
+    })
+
+    return canchas
   }
 
-  getTipoPiso(deporte: string){
-    return deporte == 'FUTBOL'  ? ['CESPED SINTETICO', 'CESPED NATURAL'] :
-           deporte == 'BASQUET' ? ['MOSAICO', 'PARQUET']  : 
-           ['CESPED SINTETICO', 'CEMENTO', 'POLVO DE LADRILLO', 'MARMOL']
+
+
+  registarCanchaRequest(cancha: CanchaModel){
+    return this.http.post('http://localhost:8080/cancha/add', cancha)
   }
 
-  getCanchas(){
-    return this.canchas
-  }
-  
-  getCanchasPorDeporte(deporte: string){
-    let canchasDelDeporte: any[];
-    canchasDelDeporte = this.canchas.filter(cancha => cancha.deporte == deporte)
-    return canchasDelDeporte;
-  }
-
-  getCanchasPorDeporteYTipoCancha(deporte: string, tipoCancha: string){
-    return this.canchas.filter(cancha => cancha.deporte == deporte.toLocaleUpperCase() && 
-                               cancha.tipoCancha == tipoCancha.toLocaleUpperCase())
-  }
 }

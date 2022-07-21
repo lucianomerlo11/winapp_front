@@ -23,7 +23,6 @@ export class ValidacionesService {
 
   validarExtensionImagen(imagen: string){
 
-    console.log('Imagen', imagen)
     if (imagen === undefined) {
       return;
     }

@@ -1,10 +1,21 @@
 export class CanchaModel{
-    deporte!: string;
-    tipoCancha!: number;
-    tipoPiso!: string;
-    descripcion!: string;
-    estado!: string;
-    fotos: string[] = [];
-     
+    descripcion: string;
+    foto: string;
+    tipoCancha: {
+      id_tipo_cancha
+    };
+    tipoPiso: {
+      id_tipo_piso
+    };
+    estadoCancha: {
+      id_estado_cancha
+    };
+    complejo: {
+      id_complejo
+    };
+    esActivo;
+  
     constructor(){}
   }
+
+
