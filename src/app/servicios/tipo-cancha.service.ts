@@ -17,6 +17,13 @@ export class TipoCanchaService {
       )
   }
 
+  getTiposDeCancha(){
+    return this.http.get('http://localhost:8080/tipocancha/getall')
+    .pipe(
+      map(resp => this.crearArregloTiposCancha(resp))
+    )
+  }
+
   
   crearArregloTiposCancha(tipoCanchaObj: object){
     const tiposDeCancha: TipoCanchaModel[] = []

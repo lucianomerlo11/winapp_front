@@ -21,12 +21,12 @@ export class CanchasService {
   }
 
   crearArregloCanchas(canchasObj: object){
-    const canchas: CanchaModel[] = []
+    const canchas: any[] = []
 
     if (canchasObj === null) {return [];}
 
     Object.keys(canchasObj).forEach(key => {
-      const cancha: CanchaModel = canchasObj[key];
+      const cancha: any = canchasObj[key];
       canchas.push(cancha)
     })
 
@@ -37,6 +37,10 @@ export class CanchasService {
 
   registarCanchaRequest(cancha: CanchaModel){
     return this.http.post('http://localhost:8080/cancha/add', cancha)
+  }
+
+  modicarCanchaRequest(cancha: any){
+    return this.http.put('http://localhost:8080/cancha/update', cancha)
   }
 
 }

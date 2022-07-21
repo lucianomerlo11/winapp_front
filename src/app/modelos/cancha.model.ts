@@ -1,4 +1,5 @@
 export class CanchaModel{
+    id_cancha;
     descripcion: string;
     foto: string;
     tipoCancha: {
