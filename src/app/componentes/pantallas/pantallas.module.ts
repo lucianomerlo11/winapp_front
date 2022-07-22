@@ -13,6 +13,7 @@ import { DropzoneModule } from 'ngx-dropzone-wrapper';
 import { DROPZONE_CONFIG } from 'ngx-dropzone-wrapper';
 import { DropzoneConfigInterface } from 'ngx-dropzone-wrapper';
 import { GestionarUsuarioComponent } from './gestionar-usuario/gestionar-usuario.component';
+import { GestionDeCanchaComponent } from './gestion-de-canchas/gestion-de-canchas.component';
 
 const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface = {
   url: 'https://httpbin.org/post',
@@ -23,7 +24,8 @@ const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface = {
 @NgModule({
   declarations: [
     GestionComplejoComponent,
-    GestionarUsuarioComponent
+    GestionarUsuarioComponent,
+    GestionDeCanchaComponent
   ],
   imports: [
     CommonModule,
