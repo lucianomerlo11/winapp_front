@@ -4,15 +4,8 @@
     <div class="overlay-content">
       <div class="text-end p-3">
         <div class="p-0 ms-auto rounded-circle profile-photo-edit">
-          <input
-            id="profile-foreground-img-file-input"
-            type="file"
-            class="profile-foreground-img-file-input"
-          />
-          <label
-            for="profile-foreground-img-file-input"
-            class="profile-photo-edit btn btn-light"
-          >
+          <input id="profile-foreground-img-file-input" type="file" class="profile-foreground-img-file-input" />
+          <label for="profile-foreground-img-file-input" class="profile-photo-edit btn btn-light">
             <i class="ri-image-edit-line align-bottom me-1"></i> Change Cover
           </label>
         </div>
@@ -26,24 +19,12 @@
     <div class="card mt-n5">
       <div class="card-body p-4">
         <div class="text-center">
-          <div
-            class="profile-user position-relative d-inline-block mx-auto mb-4"
-          >
-            <img
-              src="assets/images-win/WinLogo.png"
-              class="rounded-circle avatar-xl img-thumbnail user-profile-image"
-              alt="user-profile-image"
-            />
+          <div class="profile-user position-relative d-inline-block mx-auto mb-4">
+            <img src="assets/images-win/WinLogo.png" class="rounded-circle avatar-xl img-thumbnail user-profile-image"
+              alt="user-profile-image" />
             <div class="avatar-xs p-0 rounded-circle profile-photo-edit">
-              <input
-                id="profile-img-file-input"
-                type="file"
-                class="profile-img-file-input"
-              />
-              <label
-                for="profile-img-file-input"
-                class="profile-photo-edit avatar-xs"
-              >
+              <input id="profile-img-file-input" type="file" class="profile-img-file-input" />
+              <label for="profile-img-file-input" class="profile-photo-edit avatar-xs">
                 <span class="avatar-title rounded-circle bg-light text-body">
                   <i class="ri-camera-fill"></i>
                 </span>
@@ -61,23 +42,15 @@
   <div class="col-xxl-9">
     <div class="card mt-xxl-n5">
       <div class="card-header">
-        <ul
-          ngbNav
-          #customNav="ngbNav"
-          [activeId]="1"
-          class="nav nav-tabs-custom rounded card-header-tabs border-bottom-0"
-          role="tablist"
-        >
+        <ul ngbNav #customNav="ngbNav" [activeId]="1"
+          class="nav nav-tabs-custom rounded card-header-tabs border-bottom-0" role="tablist">
           <li [ngbNavItem]="1" class="nav-item">
             <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
               <i class="fas fa-home"></i>
               Datos del Complejo
             </a>
             <ng-template ngbNavContent>
-              <form
-                action="javascript:void(0);"
-                [formGroup]="formModificarComplejo"
-              >
+              <form action="javascript:void(0);" [formGroup]="formModificarComplejo">
                 <div class="row gap-3 mt-4">
                   <!--DATOS GENERALES-->
 
@@ -85,16 +58,9 @@
                     <h5>Datos Generales</h5>
                     <hr />
                     <div class="col-md-5">
-                      <label for="nombreComplejo" class="form-label"
-                        >Nombre del Complejo</label
-                      >
-                      <input
-                        type="text"
-                        class="form-control"
-                        id="nombreComplejo"
-                        placeholder="Ingrese Nombre de Complejo"
-                        formControlName="nombreComplejo"
-                      />
+                      <label for="nombreComplejo" class="form-label">Nombre del Complejo</label>
+                      <input type="text" class="form-control" id="nombreComplejo"
+                        placeholder="Ingrese Nombre de Complejo" formControlName="nombreComplejo" />
                     </div>
                   </div>
 
@@ -104,54 +70,28 @@
                     <hr />
                     <div class="col-md-5">
                       <label for="Calle" class="form-label">Calle</label>
-                      <input
-                        type="text"
-                        class="form-control"
-                        id="Calle"
-                        placeholder="Nombre Calle"
-                        formControlName="nombreCalle"
-                      />
+                      <input type="text" class="form-control" id="Calle" placeholder="Nombre Calle"
+                        formControlName="nombreCalle" />
                     </div>
 
                     <div class="col-md-3">
                       <label for="numCalle" class="form-label">Numero </label>
-                      <input
-                        type="number"
-                        class="form-control"
-                        id="numCalle"
-                        placeholder="1234"
-                        formControlName="numCalle"
-                      />
+                      <input type="number" class="form-control" id="numCalle" placeholder="1234"
+                        formControlName="numCalle" />
                     </div>
                     <div class="col-md-5">
                       <label for="cp" class="form-label">Codigo Postal</label>
-                      <input
-                        type="number"
-                        class="form-control"
-                        id="cp"
-                        placeholder="1234"
-                        formControlName="cp"
-                      />
+                      <input type="number" class="form-control" id="cp" placeholder="1234" formControlName="cp" />
                     </div>
                     <div class="col-md-3">
                       <label for="dpto" class="form-label">Departamento</label>
-                      <input
-                        type="text"
-                        class="form-control"
-                        id="dpto"
-                        placeholder="Nombre Departamento"
-                        formControlName="dpto"
-                      />
+                      <input type="text" class="form-control" id="dpto" placeholder="Nombre Departamento"
+                        formControlName="dpto" />
                     </div>
                     <div class="col-md-3">
                       <label for="barrio" class="form-label">Barrio</label>
-                      <input
-                        type="text"
-                        class="form-control"
-                        id="barrio"
-                        placeholder="Nombre Barrio"
-                        formControlName="barrio"
-                      />
+                      <input type="text" class="form-control" id="barrio" placeholder="Nombre Barrio"
+                        formControlName="barrio" />
                     </div>
                   </div>
 
@@ -166,15 +106,8 @@
                     <h5>Facilidades</h5>
                     <hr />
                     <div class="col-md-5">
-                      <div
-                        class="form-check form-check-outline form-check-success mb-3"
-                      >
-                        <input
-                          class="form-check-input"
-                          type="checkbox"
-                          id="formCheckBuffet"
-                          formControlName="buffet"
-                        />
+                      <div class="form-check form-check-outline form-check-success mb-3">
+                        <input class="form-check-input" type="checkbox" id="formCheckBuffet" formControlName="buffet" />
                         <label class="form-check-label" for="formCheckBuffet">
                           Tiene Buffet
                         </label>
@@ -182,15 +115,8 @@
                     </div>
 
                     <div class="col-md-3">
-                      <div
-                        class="form-check form-check-outline form-check-success mb-3"
-                      >
-                        <input
-                          class="form-check-input"
-                          type="checkbox"
-                          id="formCheckMesas"
-                          formControlName="mesas"
-                        />
+                      <div class="form-check form-check-outline form-check-success mb-3">
+                        <input class="form-check-input" type="checkbox" id="formCheckMesas" formControlName="mesas" />
                         <label class="form-check-label" for="formCheckMesas">
                           Tiene Mesas
                         </label>
@@ -198,15 +124,9 @@
                     </div>
 
                     <div class="col-md-3">
-                      <div
-                        class="form-check form-check-outline form-check-success mb-3"
-                      >
-                        <input
-                          class="form-check-input"
-                          type="checkbox"
-                          id="formCheckParrillas"
-                          formControlName="parrillas"
-                        />
+                      <div class="form-check form-check-outline form-check-success mb-3">
+                        <input class="form-check-input" type="checkbox" id="formCheckParrillas"
+                          formControlName="parrillas" />
                         <label class="form-check-label" for="formCheckParillas">
                           Tiene Parrillas
                         </label>
@@ -214,15 +134,8 @@
                     </div>
 
                     <div class="col-md-5">
-                      <div
-                        class="form-check form-check-outline form-check-success mb-3"
-                      >
-                        <input
-                          class="form-check-input"
-                          type="checkbox"
-                          id="formCheckBanos"
-                          formControlName="banos"
-                        />
+                      <div class="form-check form-check-outline form-check-success mb-3">
+                        <input class="form-check-input" type="checkbox" id="formCheckBanos" formControlName="banos" />
                         <label class="form-check-label" for="formCheckBanos">
                           Tiene Baños
                         </label>
@@ -230,15 +143,8 @@
                     </div>
 
                     <div class="col-md-3">
-                      <div
-                        class="form-check form-check-outline form-check-success mb-3"
-                      >
-                        <input
-                          class="form-check-input"
-                          type="checkbox"
-                          id="formCheckDuchas"
-                          formControlName="duchas"
-                        />
+                      <div class="form-check form-check-outline form-check-success mb-3">
+                        <input class="form-check-input" type="checkbox" id="formCheckDuchas" formControlName="duchas" />
                         <label class="form-check-label" for="formCheckDuchas">
                           Tiene Duchas
                         </label>
@@ -273,53 +179,31 @@
                 <div class="row g-2">
                   <div class="col-lg-4">
                     <div>
-                      <label for="oldpasswordInput" class="form-label"
-                        >Old Password*</label
-                      >
-                      <input
-                        type="password"
-                        class="form-control"
-                        id="oldpasswordInput"
-                        placeholder="Enter current password"
-                      />
+                      <label for="oldpasswordInput" class="form-label">Old Password*</label>
+                      <input type="password" class="form-control" id="oldpasswordInput"
+                        placeholder="Enter current password" />
                     </div>
                   </div>
                   <!--end col-->
                   <div class="col-lg-4">
                     <div>
-                      <label for="newpasswordInput" class="form-label"
-                        >New Password*</label
-                      >
-                      <input
-                        type="password"
-                        class="form-control"
-                        id="newpasswordInput"
-                        placeholder="Enter new password"
-                      />
+                      <label for="newpasswordInput" class="form-label">New Password*</label>
+                      <input type="password" class="form-control" id="newpasswordInput"
+                        placeholder="Enter new password" />
                     </div>
                   </div>
                   <!--end col-->
                   <div class="col-lg-4">
                     <div>
-                      <label for="confirmpasswordInput" class="form-label"
-                        >Confirm Password*</label
-                      >
-                      <input
-                        type="password"
-                        class="form-control"
-                        id="confirmpasswordInput"
-                        placeholder="Confirm password"
-                      />
+                      <label for="confirmpasswordInput" class="form-label">Confirm Password*</label>
+                      <input type="password" class="form-control" id="confirmpasswordInput"
+                        placeholder="Confirm password" />
                     </div>
                   </div>
                   <!--end col-->
                   <div class="col-lg-12">
                     <div class="mb-3">
-                      <a
-                        href="javascript:void(0);"
-                        class="link-primary text-decoration-underline"
-                        >Forgot Password ?</a
-                      >
+                      <a href="javascript:void(0);" class="link-primary text-decoration-underline">Forgot Password ?</a>
                     </div>
                   </div>
                   <!--end col-->
@@ -352,22 +236,12 @@
                   contraseña
                 </p>
                 <div>
-                  <input
-                    type="password"
-                    class="form-control"
-                    id="passwordInput"
-                    placeholder="Enter your password"
-                    value=""
-                    style="max-width: 265px"
-                  />
+                  <input type="password" class="form-control" id="passwordInput" placeholder="Enter your password"
+                    value="" style="max-width: 265px" />
                 </div>
                 <div class="hstack gap-2 mt-3">
-                  <a href="javascript:void(0);" class="btn btn-soft-danger"
-                    >Cerrar y eliminar este Complejo</a
-                  >
-                  <a href="javascript:void(0);" class="btn btn-light"
-                    >Cancelar</a
-                  >
+                  <a href="javascript:void(0);" class="btn btn-soft-danger">Cerrar y eliminar este Complejo</a>
+                  <a href="javascript:void(0);" class="btn btn-light">Cancelar</a>
                 </div>
               </div>
             </ng-template>

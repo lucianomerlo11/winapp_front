@@ -8,60 +8,21 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 export class GestionComplejoComponent implements OnInit {
   
+  // Formulario para registrar complejo
   public formRegistrarComplejo !: FormGroup;
-  public formDatosGenerales !: FormGroup;
-  public formDatosDireccion !: FormGroup;
-  public formDatosFacturacion !: FormGroup;
-  public formDatosFacilidades !: FormGroup;
-  
+  // Formulario para consultar complejo
+  formConsultarCancha!: FormGroup;
+  //Formulario modificar complejo
+  formModificarComplejo!: FormGroup;
+
+  // Atributo para cambio de pagina
+  accionABMC: string = 'A';
+
   constructor(private formBuilder: FormBuilder) {
 
   }
 
   ngOnInit(): void {
-
-    //datos generales 
-    const datosGenerales = {
-      nombreComplejo: ['', 
-    [
-      Validators.required
-    ]]
-    }
-    this.formDatosGenerales = this.formBuilder.group(datosGenerales)
-
-    //datos de domicilio
-    const datosDireccion = {
-      nombreCalle: ['pedro',[
-        Validators.required
-      ]],
-      numCalle: ['43', [
-        Validators.required
-      ]],
-      cp: ['12',[
-        Validators.required
-      ]],
-      dpto: ['cordoba',[
-        Validators.required
-      ]],
-      barrio: ['urca',[
-        Validators.required
-      ]],
-    }
-    this.formDatosDireccion = this.formBuilder.group(datosDireccion)
-    
-    //datos facturacion 
-    const datosFacturacion = {}
-    this.formDatosFacturacion = this.formBuilder.group(datosFacturacion)
-
-    //datos Facilidades
-    const datosFacilidades = {
-      buffet: [false],
-      mesas: [false],
-      parrillas: [false],
-      banos: [false],
-      duchas: [false],
-    }
-    this.formDatosFacilidades = this.formBuilder.group(datosFacilidades)
 
     //formulario completo
     this.formRegistrarComplejo = this.formBuilder.group({
@@ -93,5 +54,10 @@ export class GestionComplejoComponent implements OnInit {
   }
   send(): any {
     this.formRegistrarComplejo.value
+  }
+
+  
+  cambiarPagina(accion: string){
+    this.accionABMC = accion;
   }
 }
