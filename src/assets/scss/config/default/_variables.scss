@@ -187,6 +187,8 @@ $yellow:     #f7b84b;
 $green:      #0ab39c;
 $teal:       #02a8b5;
 $cyan:       #299cdb;
+$verde-primary: #7FCB16;
+$gris-primary: #212529;
 // scss-docs-end color-variables
 
 // scss-docs-start colors-map
@@ -203,12 +205,14 @@ $colors: (
   "cyan":       $cyan,
   "white":      $white,
   "gray":       $gray-600,
-  "gray-dark":  $gray-800
+  "gray-dark":  $gray-800,
+  "verde-primary": $verde-primary,
+  "gris-primary": $gris-primary
 );
 // scss-docs-end colors-map
 
 // scss-docs-start theme-color-variables
-$primary:       $indigo;
+$primary:       $verde-primary;
 $secondary:     $blue;
 $success:       $green;
 $info:          $cyan;
