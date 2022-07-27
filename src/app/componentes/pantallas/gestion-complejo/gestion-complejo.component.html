@@ -1,97 +1,404 @@
-<form autocomplete="off" [formGroup]="formRegistrarComplejo">
-  <div *ngIf="this.accionABMC == 'A'" class="container mt-5">
-    <!--DATOS GENERALES-->
+<!-- Start Breadcrumbs -->
+<app-breadcrumbs title="Gestion de Complejos" [breadcrumbItems]="breadCrumbItems"></app-breadcrumbs>
+<!-- End Breadcrumbs -->
 
+<!-- FORMULARIO DE CONSULTA COPLEJO -->
+<div class="row" *ngIf="this.accionABMC == 'C'">
+  <div class="col-lg-12">
+    <div class="card">
+      <div class="card-header">
+        <h4 class="card-title mb-0">Gestion de Complejos</h4>
+      </div><!-- end card header -->
+
+      <div class="card-body">
+        <div id="customerList">
+          <div class="row g-4 mb-3">
+            <div class="col-sm-auto">
+              <div class="d-flex gap-1">
+                <button type="button" (click)="cambiarPagina('A')"
+                  class="btn btn-soft-primary add-btn waves-effect waves-light" data-bs-toggle="modal" id="create-btn"
+                  data-bs-target="#showModal"><i class="ri-add-line align-bottom me-1"></i>
+                  Registrar Complejo
+                </button>
+                <button class="btn btn-soft-danger" onClick="deleteMultiple()"><i
+                    class="ri-delete-bin-2-line"></i></button>
+              </div>
+            </div>
+            <div class="col-sm-auto">
+              <select (change)="consultarComplejoPorDeporte($event)" class="form-select mb-1"
+                aria-label="Default select example">
+                <option selected disabled>Deporte</option>
+                <option value="">Todos</option>
+                <option *ngFor="let deporte of this.deportes" value="{{deporte.nombre}}">{{deporte.nombre}}</option>
+              </select>
+            </div>
+            <div class="col-sm">
+              <div class="d-flex justify-content-sm-end">
+                <div class="search-box ms-2">
+                  <input type="text" class="form-control search" placeholder="Buscar...">
+                  <i class="ri-search-line search-icon"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="table-responsive table-card mt-3 mb-1">
+            <table class="table">
+              <thead>
+                <tr class="bg-light text-muted">
+                  <th scope="col" style="width: 50px;">
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" id="checkAll" value="option">
+                    </div>
+                  </th>
+                  <th class="sort" style="text-align: center;" data-sort="id_complejo">iD Complejo</th>
+                  <th class="sort" style="text-align: center;" data-sort="nombre">Nombre Complejo</th>
+                  <th class="sort" style="text-align: center;" data-sort="domicilio">Domicilio</th>
+                  <th class="sort" style="text-align: center;" data-sort="nombre_duenio">Nombre Dueño</th>
+                  <th class="sort" style="text-align: center;" data-sort="estado">Estado</th>
+                  <th class="sort" style="text-align: center;">Accion</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let datosComplejo of this.todosLosComplejos">
+                  <th scope="row">
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" name="checkAll" value="option1">
+                    </div>
+                  </th>
+                  <td style="text-align: center;" (click)="rowclickhandler(detalleComplejo, datosComplejo)">
+                    <ngb-highlight>{{datosComplejo.id_complejo}}</ngb-highlight>
+                  </td>
+                  <td style="text-align: center;" (click)="rowclickhandler(detalleComplejo, datosComplejo)">
+                    <ngb-highlight>{{datosComplejo.nombre}}</ngb-highlight>
+                  </td>
+                  <td style="text-align: center;" (click)="rowclickhandler(detalleComplejo, datosComplejo)">
+                    <ngb-highlight>{{datosComplejo.domicilio}}</ngb-highlight>
+                  </td>
+                  <td style="text-align: center;" (click)="rowclickhandler(detalleComplejo, datosComplejo)">
+                    <ngb-highlight>{{datosComplejo.duenio.cliente.nombre}} {{datosComplejo.duenio.cliente.apellido}}
+                    </ngb-highlight>
+                  </td>
+                  <td class="status" style="text-align: center;"
+                    (click)="rowclickhandler(detalleComplejo, datosComplejo)">
+                    <span *ngIf="datosComplejo.esActivo" class="badge rounded-pill badge-soft-primary">ACTIVO</span>
+                    <span *ngIf="datosComplejo.esActivo == false"
+                      class="badge rounded-pill badge-soft-danger">INACTIVO</span>
+                  </td>
+                  <!-- INICIO MODAL DETALLE COMPLEJO -->
+                  <ng-template #detalleComplejo id="detalleComplejo" let-modal>
+                    <div class="modal-header">
+                      <h4 class="modal-title">Detalle Complejo</h4>
+                    </div>
+                    <div class="modal-body">
+                      <div class="row mb-3">
+                        <h5>Datos Generales</h5>
+                        <hr />
+                        <div class="col-lg-3">
+                          <label for="nombreComplejo" class="form-label">Nombre del Complejo</label>
+                        </div>
+                        <div class="col-lg-9">
+                          <input type="text" class="form-control" id="nombreDetalleComplejo" disabled />
+                        </div>
+                      </div>
+
+                      <div class="row mb-3">
+                        <h5>Domicilio</h5>
+                        <hr />
+                        <div class="col-lg-3">
+                          <label for="domicilio" class="form-label">Domicilio</label>
+                        </div>
+                        <div class="col-lg-9">
+                          <input type="text" class="form-control" id="domicilioDetalleComplejo" disabled />
+                        </div>
+                      </div>
+
+                      <div class="row mb-3">
+                        <h5>Facilidades</h5>
+                        <hr />
+                        <div class="col-lg-4">
+                          <input class="form-check-input" type="checkbox" id="buffetDetalleComplejo" disabled />
+                          <label class="form-check-label" for="tiene_buffet">
+                            Tiene Buffet
+                          </label>
+                        </div>
+
+                        <div class="col-lg-4">
+                          <input class="form-check-input" type="checkbox" id="mesasDetalleComplejo" disabled />
+                          <label class="form-check-label" for="tiene_mesas">
+                            Tiene Mesas
+                          </label>
+                        </div>
+
+                        <div class="col-lg-4">
+                          <input class="form-check-input" type="checkbox" id="parrillasDetalleComplejo" disabled />
+                          <label class="form-check-label" for="tiene_parrillas">
+                            Tiene Parrillas
+                          </label>
+                        </div>
+
+                        <div class="col-lg-4">
+                          <input class="form-check-input" type="checkbox" id="baniosDetalleComplejo" disabled />
+                          <label class="form-check-label" for="tiene_banios">
+                            Tiene Baños
+                          </label>
+                        </div>
+
+                        <div class="col-lg-4">
+                          <input class="form-check-input" type="checkbox" id="duchasDetalleComplejo" disabled />
+                          <label class="form-check-label" for="tiene_duchas">
+                            Tiene Duchas
+                          </label>
+                        </div>
+
+                        <div class="col-lg-4">
+                          <input class="form-check-input" type="checkbox" id="estacionamientoDetalleComplejo" disabled />
+                          <label class="form-check-label" for="tiene_estacionamiento">
+                            Tiene Estacionamiento
+                          </label>
+                        </div>
+
+                      </div>
+                    </div>
+
+                    <div class="modal-footer">
+                      <div class="col-lg-12">
+                        <div class="hstack gap-2 justify-content-end">
+                          <button type="submit" class="btn btn-primary" (click)="verCanchas(datosComplejo)">
+                            Ver Canchas
+                          </button>
+                          <button type="button" class="btn btn-soft-success" (click)="modal.dismiss()">
+                            Cerrar
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+
+                  </ng-template>
+
+                  <!-- fIN MODAL DETALLE COMPLEJO -->
+                  <td>
+                    <div class="d-flex gap-1 justify-content-center">
+                      <div class="edit">
+                        <button class="btn btn-soft-primary waves-effect waves-light" data-bs-toggle="modal"
+                          data-bs-target="#showModal"
+                          (click)="abrirModalModificar(contenidoModificar, datosComplejo)">Editar</button>
+
+                        <!-- MODAL MODIFICAR COMPLEJO-->
+                        <ng-template class="modal fade" #contenidoModificar tabindex="-1"
+                          aria-labelledby="exampleModalgridLabel" aria-modal="true">
+                          <div class="modal-header">
+                            <h5 class="modal-title">Modificar cancha</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                              (click)="cerrarModal()"></button>
+                          </div>
+                          <div class="modal-body">
+                            <form autocomplete="off" [formGroup]="formModificarComplejo"
+                              (ngSubmit)="modificarComplejo(datosComplejo)">
+                              <h5>Datos Generales</h5>
+                              <hr />
+                              <div class="row">
+                                <label for="nombreComplejo" class="form-label">Nombre del Complejo</label>
+                              </div>
+                              <div class="col-lg-9">
+                                <input type="text" class="form-control" id="nombreComplejo"
+                                  placeholder="Ingrese Nombre de Complejo" formControlName="nombre" />
+                              </div>
+
+                              <!--DATOS DIRECCION-->
+                              <h5>Domicilio</h5>
+                              <hr />
+                              <div class="row">
+                                <label for="domicilio" class="form-label">Domicilio</label>
+                              </div>
+                              <div class="col-lg-9">
+                                <input type="text" class="form-control" id="domicilio" name="domicilio"
+                                  placeholder="Domicilio" formControlName="domicilio" />
+                              </div>
+
+                              <!--Datos Facilidades-->
+                              <h5>Facilidades</h5>
+                              <hr />
+                              <div class="col-lg-3">
+                                <div class="form-check form-check-outline form-check-success mb-3">
+                                  <input class="form-check-input" type="checkbox" id="tiene_buffet" name="tiene_buffet"
+                                    formControlName="tiene_buffet" />
+                                  <label class="form-check-label" for="tiene_buffet">
+                                    Tiene Buffet
+                                  </label>
+                                </div>
+
+                                <div class="form-check form-check-outline form-check-success mb-3">
+                                  <input class="form-check-input" type="checkbox" id="tiene_mesas" name="tiene_mesas"
+                                    formControlName="tiene_mesas" />
+                                  <label class="form-check-label" for="tiene_mesas">
+                                    Tiene Mesas
+                                  </label>
+                                </div>
+
+                                <div class="form-check form-check-outline form-check-success mb-3">
+                                  <input class="form-check-input" type="checkbox" name="tiene_parrillas"
+                                    id="tiene_parrillas" formControlName="tiene_parrillas" />
+                                  <label class="form-check-label" for="tiene_parrillas">
+                                    Tiene Parrillas
+                                  </label>
+                                </div>
+
+                                <div class="form-check form-check-outline form-check-success mb-3">
+                                  <input class="form-check-input" type="checkbox" name="tiene_banios" id="tiene_banios"
+                                    formControlName="tiene_banios" />
+                                  <label class="form-check-label" for="tiene_banios">
+                                    Tiene Baños
+                                  </label>
+                                </div>
+
+                                <div class="form-check form-check-outline form-check-success mb-3">
+                                  <input class="form-check-input" type="checkbox" name="tiene_duchas" id="tiene_duchas"
+                                    formControlName="tiene_duchas" />
+                                  <label class="form-check-label" for="tiene_duchas">
+                                    Tiene Duchas
+                                  </label>
+                                </div>
+
+                                <div class="form-check form-check-outline form-check-success mb-3">
+                                  <input class="form-check-input" type="checkbox" name="tiene_estacionamiento" id="tiene_estacionamiento"
+                                    formControlName="tiene_estacionamiento" />
+                                  <label class="form-check-label" for="tiene_estacionamiento">
+                                    Tiene Estacionamiento
+                                  </label>
+                                </div>
+
+                              </div>
+
+                              <!--end col-->
+                              <div class="col-lg-12">
+                                <div class="hstack gap-2 justify-content-end">
+                                  <button type="submit" class="btn btn-primary"
+                                    [disabled]="formModificarComplejo.invalid">
+                                    Actualizar Complejo
+                                  </button>
+                                  <button type="button" class="btn btn-soft-success" (click)="cerrarModal()">
+                                    Cancelar
+                                  </button>
+                                </div>
+                              </div>
+                            </form>
+                          </div>
+                        </ng-template>
+                        <!-- FIN MODAL MODIFICAR COMPLEJO-->
+                      </div>
+                      <div class="remove">
+                        <button class="btn btn-soft-danger waves-effect waves-light" data-bs-toggle="modal"
+                          data-bs-target="#deleteRecordModal"
+                          (click)="eliminarComplejo(datosComplejo.id_complejo)">Eliminar</button>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="row justify-content-md-between align-items-md-center">
+            <div class="col col-sm-6">
+              <div class="dataTables_info mb-2" id="tickets-table_info" role="status" aria-live="polite">
+              </div>
+            </div>
+            <!-- Pagination -->
+            <div class="col col-sm-6">
+              <div class="text-sm-right float-sm-end listjs-pagination">
+                <ngb-pagination></ngb-pagination>
+              </div>
+            </div>
+            <!-- End Pagination -->
+          </div>
+        </div>
+      </div><!-- end card -->
+    </div>
+    <!-- end col -->
+  </div>
+  <!-- end col -->
+</div>
+<!-- FIN CONSULTAR COMPLEJO -->
+
+
+
+
+<!-- FORMULARIO REGISTRAR COMPLEJO -->
+<form autocomplete="off" [formGroup]="formRegistrarComplejo" (ngSubmit)="registrarComplejo()">
+  <div *ngIf="this.accionABMC == 'A'" class="row mb-3">
+    <!--DATOS GENERALES-->
+    <h5>Datos Generales</h5>
+    <hr />
     <div class="row">
-      <h5>Datos Generales</h5>
-      <hr />
-      <div class="col-md-5">
-        <label for="nombreComplejo" class="form-label">Nombre del Complejo</label>
-        <input type="text" class="form-control" id="nombreComplejo" placeholder="Ingrese Nombre de Complejo"
-          formControlName="nombreComplejo" />
-      </div>
+      <label for="nombreComplejo" class="form-label">Nombre del Complejo</label>
+    </div>
+    <div class="col-lg-9">
+      <input type="text" class="form-control" id="nombreComplejo" placeholder="Ingrese Nombre de Complejo"
+        formControlName="nombreComplejo" />
     </div>
 
     <!--DATOS DIRECCION-->
+    <h5>Domicilio</h5>
+    <hr />
     <div class="row">
-      <h5>Domicilio</h5>
-      <hr />
-      <div class="col-md-5">
-        <label for="Calle" class="form-label">Calle</label>
-        <input type="text" class="form-control" id="Calle" placeholder="Nombre Calle" formControlName="nombreCalle" />
-      </div>
-
-      <div class="col-md-3">
-        <label for="numCalle" class="form-label">Numero </label>
-        <input type="number" class="form-control" id="numCalle" placeholder="1234" formControlName="numCalle" />
-      </div>
-      <div class="col-md-5">
-        <label for="cp" class="form-label">Codigo Postal</label>
-        <input type="number" class="form-control" id="cp" placeholder="1234" formControlName="cp" />
-      </div>
-      <div class="col-md-3">
-        <label for="dpto" class="form-label">Departamento</label>
-        <input type="text" class="form-control" id="dpto" placeholder="Nombre Departamento" formControlName="dpto" />
-      </div>
-      <div class="col-md-3">
-        <label for="barrio" class="form-label">Barrio</label>
-        <input type="text" class="form-control" id="barrio" placeholder="Nombre Barrio" formControlName="barrio" />
-      </div>
+      <label for="domicilio" class="form-label">Domicilio</label>
     </div>
-
-    <!--Datos Facturacion-->
-    <div class="row">
-      <h5>Facturacion</h5>
-      <hr />
+    <div class="col-lg-9">
+      <input type="text" class="form-control" id="domicilio" name="domicilio" placeholder="Domicilio"
+        formControlName="domicilio" />
     </div>
 
     <!--Datos Facilidades-->
-    <div class="row">
-      <h5>Facilidades</h5>
-      <hr />
-      <div class="col-md-5">
-        <div class="form-check form-check-outline form-check-success mb-3">
-          <input class="form-check-input" type="checkbox" id="formCheckBuffet" formControlName="buffet" />
-          <label class="form-check-label" for="formCheckBuffet">
-            Tiene Buffet
-          </label>
-        </div>
+    <h5>Facilidades</h5>
+    <hr />
+    <div class="col-lg-3">
+      <div class="form-check form-check-outline form-check-success mb-3">
+        <input class="form-check-input" type="checkbox" id="tiene_buffet" name="tiene_buffet"
+          formControlName="tiene_buffet" />
+        <label class="form-check-label" for="tiene_buffet">
+          Tiene Buffet
+        </label>
       </div>
 
-      <div class="col-md-3">
-        <div class="form-check form-check-outline form-check-success mb-3">
-          <input class="form-check-input" type="checkbox" id="formCheckMesas" formControlName="mesas" />
-          <label class="form-check-label" for="formCheckMesas">
-            Tiene Mesas
-          </label>
-        </div>
+      <div class="form-check form-check-outline form-check-success mb-3">
+        <input class="form-check-input" type="checkbox" id="tiene_mesas" name="tiene_mesas"
+          formControlName="tiene_mesas" />
+        <label class="form-check-label" for="tiene_mesas">
+          Tiene Mesas
+        </label>
       </div>
 
-      <div class="col-md-3">
-        <div class="form-check form-check-outline form-check-success mb-3">
-          <input class="form-check-input" type="checkbox" id="formCheckParrillas" formControlName="parrillas" />
-          <label class="form-check-label" for="formCheckParillas">
-            Tiene Parrillas
-          </label>
-        </div>
+      <div class="form-check form-check-outline form-check-success mb-3">
+        <input class="form-check-input" type="checkbox" name="tiene_parrillas" id="tiene_parrillas"
+          formControlName="tiene_parrillas" />
+        <label class="form-check-label" for="tiene_parrillas">
+          Tiene Parrillas
+        </label>
       </div>
 
-      <div class="col-md-5">
-        <div class="form-check form-check-outline form-check-success mb-3">
-          <input class="form-check-input" type="checkbox" id="formCheckBanos" formControlName="banos" />
-          <label class="form-check-label" for="formCheckBanos">
-            Tiene Baños
-          </label>
-        </div>
+      <div class="form-check form-check-outline form-check-success mb-3">
+        <input class="form-check-input" type="checkbox" name="tiene_banios" id="tiene_banios"
+          formControlName="tiene_banios" />
+        <label class="form-check-label" for="tiene_banios">
+          Tiene Baños
+        </label>
       </div>
 
-      <div class="col-md-3">
-        <div class="form-check form-check-outline form-check-success mb-3">
-          <input class="form-check-input" type="checkbox" id="formCheckDuchas" formControlName="duchas" />
-          <label class="form-check-label" for="formCheckDuchas">
-            Tiene Duchas
-          </label>
-        </div>
+      <div class="form-check form-check-outline form-check-success mb-3">
+        <input class="form-check-input" type="checkbox" name="tiene_duchas" id="tiene_duchas"
+          formControlName="tiene_duchas" />
+        <label class="form-check-label" for="tiene_duchas">
+          Tiene Duchas
+        </label>
+      </div>
+
+      <div class="form-check form-check-outline form-check-success mb-3">
+        <input class="form-check-input" type="checkbox" name="tiene_estacionamiento" id="tiene_estacionamiento"
+          formControlName="tiene_estacionamiento" />
+        <label class="form-check-label" for="tiene_estacionamiento">
+          Tiene Estacionamiento
+        </label>
       </div>
     </div>
 
@@ -99,10 +406,10 @@
     <div class="col-lg-12">
       <div class="hstack gap-2 justify-content-end">
         <button type="submit" class="btn btn-primary" [disabled]="formRegistrarComplejo.invalid">
-          Updates
+          Registrar Complejo
         </button>
-        <button type="button" class="btn btn-soft-success">
-          Cancel
+        <button type="button" class="btn btn-soft-success" (click)="cambiarPagina('C')">
+          Cancelar
         </button>
       </div>
     </div>
@@ -110,6 +417,4 @@
   </div>
   <!--end row-->
 </form>
-
-<!-- FORMULARIO DE CONSULTA COMPLEJO-->
-
+<!-- FIN FORMULARIO REGISTRAR COMPLEJO -->

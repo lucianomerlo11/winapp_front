@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 
 import { PantallasRoutingModule } from './pantallas-routing.module';
 import { GestionComplejoComponent } from './gestion-complejo/gestion-complejo.component';
-import { BajaComplejoComponent } from './baja-complejo/baja-complejo.component';
 import { ModificarComplejoComponent } from './modificar-complejo/modificar-complejo.component';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -21,6 +20,8 @@ import { DropzoneConfigInterface } from 'ngx-dropzone-wrapper';
 import { GestionarUsuarioComponent } from './gestionar-usuario/gestionar-usuario.component';
 import { GestionDeCanchaComponent } from './gestion-de-canchas/gestion-de-canchas.component';
 
+import { NgbTypeahead } from '@ng-bootstrap/ng-bootstrap';
+
 const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface = {
   url: 'https://httpbin.org/post',
   maxFilesize: 50,
@@ -30,10 +31,10 @@ const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface = {
 @NgModule({
   declarations: [
     GestionComplejoComponent,
-    BajaComplejoComponent,
     ModificarComplejoComponent,
     GestionarUsuarioComponent,
     GestionDeCanchaComponent
+
   ],
   imports: [
     CommonModule,

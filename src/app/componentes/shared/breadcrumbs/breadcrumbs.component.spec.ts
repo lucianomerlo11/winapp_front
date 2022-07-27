@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { BajaComplejoComponent } from './baja-complejo.component';
+import { BreadcrumbsComponent } from './breadcrumbs.component';
 
-describe('BajaComplejoComponent', () => {
-  let component: BajaComplejoComponent;
-  let fixture: ComponentFixture<BajaComplejoComponent>;
+describe('BreadcrumbsComponent', () => {
+  let component: BreadcrumbsComponent;
+  let fixture: ComponentFixture<BreadcrumbsComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ BajaComplejoComponent ]
+      declarations: [ BreadcrumbsComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(BajaComplejoComponent);
+    fixture = TestBed.createComponent(BreadcrumbsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

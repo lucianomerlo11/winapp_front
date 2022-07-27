@@ -11,6 +11,7 @@ import { SwiperConfigInterface } from 'ngx-swiper-wrapper';
 import { CountToModule } from 'angular-count-to';
 
 import { ScrollspyDirective } from './scrollspy.directive';
+import { BreadcrumbsComponent } from './breadcrumbs/breadcrumbs.component';
 
 const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
   direction: 'horizontal',
@@ -19,7 +20,8 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
 
 @NgModule({
   declarations: [
-    ScrollspyDirective
+    ScrollspyDirective,
+    BreadcrumbsComponent
   ],
   imports: [
     CommonModule,
@@ -29,6 +31,6 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
     SwiperModule,
     CountToModule
   ],
-  exports: [ScrollspyDirective]
+  exports: [ScrollspyDirective, BreadcrumbsComponent]
 })
 export class SharedModule { }
