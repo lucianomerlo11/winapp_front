@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { Router } from '@angular/router';
+import { FirebaseService } from 'src/app/servicios/firebase.service';
 
 @Component({
   selector: 'app-registrarse',
@@ -19,7 +20,8 @@ export class RegistrarseComponent implements OnInit {
   year: number = new Date().getFullYear();
 
   constructor(private formBuilder: FormBuilder, 
-              private router: Router) { }
+              private router: Router,
+              private fireSerivce: FirebaseService) { }
 
   ngOnInit(): void {
     this.FormReg = this.formBuilder.group({
@@ -34,6 +36,18 @@ export class RegistrarseComponent implements OnInit {
   // convenience getter for easy access to form fields
   get f() { return this.FormReg.controls; }
 
+  registrar() {
+    this.submitted = true;
+    if (this.FormReg.invalid) {
+      return;
+    }
+    else {
+      this.fireSerivce.registrar(this.FormReg.value.email, this.FormReg.value.password)
+        .then((res: any) => {
+          console.log(res.user);
+      })
+    }
+  }
   onSubmit() {
     // this.submitted = true;
     // // stop here if form is invalid

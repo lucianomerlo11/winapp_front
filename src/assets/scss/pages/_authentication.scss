@@ -36,7 +36,7 @@
     background-size: cover;
 
     .bg-overlay{
-        background: linear-gradient(to right, darken($primary, 6%), $primary);
+        background: linear-gradient(to right, darken($gris_primary, 6%), $gris_primary);
         // opacity: 0.9;
     }
 
@@ -96,7 +96,7 @@
 // Auth cover
 
 .auth-bg-cover{
-    background: linear-gradient(-45deg, $primary 50%, $success);
+    background: linear-gradient(-45deg, $gris-primary 50%, $gris-primary);
 
     > .bg-overlay{
         background-image: url("../../images/cover-pattern.png");

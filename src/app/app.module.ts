@@ -6,6 +6,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { LayoutModule } from './componentes/layout/layout.module';
 import { PantallasModule } from './componentes/pantallas/pantallas.module';
+import { AngularFireModule } from '@angular/fire/compat';
+import { environment } from 'src/environments/environment';
 
 @NgModule({
   declarations: [
@@ -16,7 +18,8 @@ import { PantallasModule } from './componentes/pantallas/pantallas.module';
     BrowserModule,
     AppRoutingModule,
     LayoutModule,
-    PantallasModule
+    PantallasModule,
+    AngularFireModule.initializeApp(environment.firebaseConfig)
   ],
   providers: [],
   bootstrap: [AppComponent]
