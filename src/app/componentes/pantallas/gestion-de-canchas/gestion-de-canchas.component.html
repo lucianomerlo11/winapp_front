@@ -69,7 +69,7 @@
 
 
 <div *ngIf="this.accionABMC == 'C'" class="container">
-    <div class="row justify-content-center mt-5 mb-3">
+    <div class="row justify-content-center mb-3">
         <div class="col-md-9">
             <h1 style="text-align: center;">Mis canchas</h1>
             <div class="consultarCancha">
@@ -81,7 +81,7 @@
                     </div>
                     <div class="col-lg-3">
                       <select (change)="consultarCanchasPorDeporte($event)"  class="form-select" aria-label=".form-select-sm example" formControlName="deporte">
-                        <option value={{0}} disabled selected>Seleccione un deporte</option>
+                        <option value="{{0}}" disabled selected>Seleccione un deporte</option>
                         <option value="{{deporte.id_deporte}}" *ngFor="let deporte of this.deportes">{{deporte.nombre}}</option>
                       </select>
                     </div>
@@ -99,16 +99,20 @@
                   </div>
                 </form>  
             </div>
-            <div class="table-responsive table-card mb-3">
-              <table class="table table-bordered border-primary table-nowrap mt-2 mb-0">
-                  <thead class="table-ligth">
-                    <tr>
-                      <th scope="col" style="text-align: center;">Nro de cancha</th>
-                      <th scope="col" style="text-align: center;">Deporte</th>
-                      <th scope="col" style="text-align: center;">Tipo de cancha</th>
-                      <th scope="col" style="text-align: center;">Tipo de piso</th>
-                      <th scope="col" style="text-align: center;">Estado</th>
-                      <th scope="col" style="text-align: center;">Acción</th>
+            <div *ngIf="this.todasLasCanchas.length == 0" class="alert alert-warning text-center mt-3">
+              <h4 class="alert-heading">No hay canchas registradas</h4>
+            </div>
+            <div *ngIf="this.todasLasCanchas.length > 0" class="table-responsive table-card mb-3">
+              <table class="table mt-2 mb-0">
+                  <thead>
+                    <tr class="bg-light text-muted">
+                      <th style="text-align: center;">Nro de cancha</th>
+                      <th style="text-align: center;">Deporte</th>
+                      <th style="text-align: center;">Tipo de cancha</th>
+                      <th style="text-align: center;">Tipo de piso</th>
+                      <th style="text-align: center;">Estado</th>
+                      <th style="text-align: center">Disponibilidad</th>
+                      <th style="text-align: center;">Acción</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -118,9 +122,14 @@
                       <td style="text-align: center;">{{canchasComplejo.tipoCancha.descripcion}}</td>
                       <td style="text-align: center;">{{canchasComplejo.tipoPiso.nombre}}</td>
                       <td style="text-align: center;">{{canchasComplejo.estadoCancha.nombre_estado}}</td>
+                      <td style="text-align: center;" *ngIf="canchasComplejo.esActivo" ><span class="badge rounded-pill bg-primary">Activa  </span></td>
+                      <td style="text-align: center;" *ngIf="!canchasComplejo.esActivo"><span class="badge rounded-pill bg-danger">Inactiva</span></td>
                       <td style="text-align: center;">          
-                        <button type="button" class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#exampleModalgrid" (click)="abrirModal(contenido, canchasComplejo)">Modificar</button>
-                        <!-- Grids in modals -->
+                        <div style="display: flex; justify-content: space-around">
+                          <button type="button" class="btn btn-outline-info btn-icon waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#exampleModalgrid" (click)="abrirModal(contenido, canchasComplejo)"><i class="ri-pencil-line"></i></button>
+                          <button *ngIf="canchasComplejo.esActivo" type="button" class="btn btn-outline-danger btn-icon waves-effect waves-light" (click)="eliminarCancha(canchasComplejo.id_cancha)"><i class="ri-close-circle-line"></i></button>                        <!-- Grids in modals -->
+                          <button *ngIf="!canchasComplejo.esActivo" type="button" class="btn btn-outline-primary btn-icon waves-effect waves-light" (click)="habilitarCancha(canchasComplejo)"><i class="ri-checkbox-circle-line"></i></button>
+                        </div>
                         <ng-template class="modal fade" #contenido tabindex="-1" aria-labelledby="exampleModalgridLabel" aria-modal="true">
                           <div class="modal-dialog">
                             <div class="modal-content">

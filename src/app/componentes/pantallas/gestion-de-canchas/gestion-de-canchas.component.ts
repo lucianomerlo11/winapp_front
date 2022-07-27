@@ -91,15 +91,22 @@ export class GestionDeCanchaComponent implements OnInit {
         this.deportes = resp
       })
       // Realizo una carga de todas las canchas del complejo sin realizar filtros
-      this.canchasServices.getCanchas(this.idComplejo).subscribe(resp => {
-        this.todasLasCanchas = resp
-        console.log(this.todasLasCanchas)
-      })
+      this.cargarCanchas(this.idComplejo)
   }
 
 
   cambiarPagina(accion: string){
+    if (accion == 'C') {
+      this.cargarCanchas(this.idComplejo)
+    }
     this.accionABMC = accion;
+    
+  }
+
+  cargarCanchas(id_complejo){
+    this.canchasServices.getCanchas(id_complejo).subscribe(resp => {
+      this.todasLasCanchas = resp
+    })
   }
 
   /**
@@ -115,8 +122,6 @@ export class GestionDeCanchaComponent implements OnInit {
     this.tiposCanchasServices.getTipoCanchaByDeporte(deporte).subscribe(resp =>{
       this.selectTipoCancha = resp
     })
-
-
     this.canchasServices.getCanchas(this.idComplejo).subscribe(resp => {
         this.todasLasCanchas = resp.filter(c => c.tipoCancha.deporte.id_deporte == deporte)
     })
@@ -268,16 +273,22 @@ export class GestionDeCanchaComponent implements OnInit {
     this.getTodosTiposDeCancha()
     this.getTodosTiposPiso()
     this.getEstadosCancha()
+    this.cargarDatosFormModificarCancha(cancha)
     this.formularioModificarCancha.controls['nroCancha'].disable()
+  }
+  
+  
+  cargarDatosFormModificarCancha(cancha:any){
     this.formularioModificarCancha.controls['nroCancha'].reset(cancha.id_cancha)
     this.formularioModificarCancha.controls['descripcion'].reset(cancha.descripcion)
+    this.formularioModificarCancha.controls['idTipoCancha'].setValue(cancha.tipoCancha.id_tipo_cancha)
+    this.formularioModificarCancha.controls['id_tipo_piso'].setValue(cancha.tipoPiso.id_tipo_piso)
+    this.formularioModificarCancha.controls['idEstado'].setValue(cancha.estadoCancha.id_estado_cancha)
   }
 
   cerrarModal(){
     this.modal.dismissAll()
-    this.canchasServices.getCanchas(this.idComplejo).subscribe(resp => {
-      this.todasLasCanchas = resp
-    })
+    this.cargarCanchas(this.idComplejo)
   }
 
   crearFormularioModificarCancha(){
@@ -331,4 +342,14 @@ export class GestionDeCanchaComponent implements OnInit {
 
   }
 
+  eliminarCancha(idCancha: any){
+    this.canchasServices.eliminarCanchaRequest(idCancha).subscribe(resp => {
+      this.cargarCanchas(this.idComplejo)
+    })
+  }
+
+  habilitarCancha(cancha: any){
+    cancha.esActivo = true
+    this.canchasServices.modicarCanchaRequest(cancha).subscribe()
+  }
 }

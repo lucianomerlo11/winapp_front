@@ -43,4 +43,9 @@ export class CanchasService {
     return this.http.put('http://localhost:8080/cancha/update', cancha)
   }
 
+  eliminarCanchaRequest(idCancha: any){
+    let id = parseInt(idCancha)
+    return this.http.put(`http://localhost:8080/cancha/remove/${id}`, id)
+  }
+
 }
