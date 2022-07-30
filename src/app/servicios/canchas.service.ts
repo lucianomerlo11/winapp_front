@@ -8,13 +8,14 @@ import { map } from 'rxjs/operators';
 })
 export class CanchasService {
 
+  url: string = 'https://winapprest.herokuapp.com/cancha'
   constructor(private http: HttpClient) { }
 
 
 
   getCanchas(idComplejo: any){
     const {id} = idComplejo
-    return this.http.get(`http://localhost:8080/cancha/getbycomplejo/${id}`)
+    return this.http.get(`${this.url}/getbycomplejo/${id}`)
       .pipe(
         map( resp => this.crearArregloCanchas(resp) )
       )
@@ -36,16 +37,16 @@ export class CanchasService {
 
 
   registarCanchaRequest(cancha: CanchaModel){
-    return this.http.post('http://localhost:8080/cancha/add', cancha)
+    return this.http.post(`${this.url}/add`, cancha)
   }
 
   modicarCanchaRequest(cancha: any){
-    return this.http.put('http://localhost:8080/cancha/update', cancha)
+    return this.http.put(`${this.url}/update`, cancha)
   }
 
   eliminarCanchaRequest(idCancha: any){
     let id = parseInt(idCancha)
-    return this.http.put(`http://localhost:8080/cancha/remove/${id}`, id)
+    return this.http.delete(`${this.url}/remove/${id}`)
   }
 
 }

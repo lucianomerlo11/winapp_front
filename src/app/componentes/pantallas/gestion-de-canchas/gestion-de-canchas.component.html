@@ -4,6 +4,15 @@
       <div class="row mb-3 justify-content-center">
         <div class="col-md-8">
 
+          <div class="row mt-3 nroCancha">
+            <div class="col-md-3">
+              <label class="form-label">Número de cancha</label>
+            </div>
+            <div class="col-md-4 nroCancha">
+              <input  type="number" class="form-control"  formControlName="nroCancha" style="width: 70px; margin-right: 10px;">
+              <small *ngIf="nroCanchaNoValido" class="text-danger">Debe ingresar un número mayor a cero</small>
+            </div>
+          </div>
           <div class="mb-3">
             <!-- Deportes -->
             <label for="deporte" class="form-label color-text">Deporte</label>
@@ -71,7 +80,11 @@
 <div *ngIf="this.accionABMC == 'C'" class="container">
     <div class="row justify-content-center mb-3">
         <div class="col-md-9">
-            <h1 style="text-align: center;">Mis canchas</h1>
+          <div class="card">
+            <div class="card-header">
+              <h1 style="text-align: center;">Mis canchas</h1>
+            </div>
+          <div class="card-body">
             <div class="consultarCancha">
                 <h3>Mostrar canchas por</h3>
                 <form  autocomplete="off" [formGroup]="formularioConsultarCancha">
@@ -97,6 +110,11 @@
                       </select>
                     </div>
                   </div>
+                  <div *ngIf="misCanchas" class="row mb-3">
+                    <div class="col-md-3">
+                      <button type="button" class="btn btn-primary" (click)="cargarCanchas()">Ver mis canchas</button>
+                    </div>
+                  </div>
                 </form>  
             </div>
             <div *ngIf="this.todasLasCanchas.length == 0" class="alert alert-warning text-center mt-3">
@@ -110,25 +128,21 @@
                       <th style="text-align: center;">Deporte</th>
                       <th style="text-align: center;">Tipo de cancha</th>
                       <th style="text-align: center;">Tipo de piso</th>
-                      <th style="text-align: center;">Estado</th>
-                      <th style="text-align: center">Disponibilidad</th>
+                      <th style="text-align: center;">Estado</th>                  
                       <th style="text-align: center;">Acción</th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr *ngFor="let canchasComplejo of this.todasLasCanchas">
-                      <td style="text-align: center;">{{canchasComplejo.id_cancha}}</td>
+                      <td style="text-align: center;">{{canchasComplejo.numero_cancha}}</td>
                       <td style="text-align: center;">{{canchasComplejo.tipoCancha.deporte.nombre}}</td>
                       <td style="text-align: center;">{{canchasComplejo.tipoCancha.descripcion}}</td>
                       <td style="text-align: center;">{{canchasComplejo.tipoPiso.nombre}}</td>
-                      <td style="text-align: center;">{{canchasComplejo.estadoCancha.nombre_estado}}</td>
-                      <td style="text-align: center;" *ngIf="canchasComplejo.esActivo" ><span class="badge rounded-pill bg-primary">Activa  </span></td>
-                      <td style="text-align: center;" *ngIf="!canchasComplejo.esActivo"><span class="badge rounded-pill bg-danger">Inactiva</span></td>
+                      <td style="text-align: center;">{{canchasComplejo.estadoCancha.nombre}}</td>
                       <td style="text-align: center;">          
-                        <div style="display: flex; justify-content: space-around">
-                          <button type="button" class="btn btn-outline-info btn-icon waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#exampleModalgrid" (click)="abrirModal(contenido, canchasComplejo)"><i class="ri-pencil-line"></i></button>
-                          <button *ngIf="canchasComplejo.esActivo" type="button" class="btn btn-outline-danger btn-icon waves-effect waves-light" (click)="eliminarCancha(canchasComplejo.id_cancha)"><i class="ri-close-circle-line"></i></button>                        <!-- Grids in modals -->
-                          <button *ngIf="!canchasComplejo.esActivo" type="button" class="btn btn-outline-primary btn-icon waves-effect waves-light" (click)="habilitarCancha(canchasComplejo)"><i class="ri-checkbox-circle-line"></i></button>
+                        <div style="display: flex; flex-direction: row; justify-content: space-around;">
+                          <button style="margin-right: 5px;" type="button" class="btn btn-outline-info btn-icon waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#exampleModalgrid" (click)="abrirModal(contenido, canchasComplejo)"><i class="ri-pencil-line"></i></button>                    
+                          <button type="button" class="btn btn-outline-danger btn-icon waves-effect waves-light" (click)="eliminarCancha(canchasComplejo.id_cancha)"><i class="ri-delete-bin-5-line"></i></button>
                         </div>
                         <ng-template class="modal fade" #contenido tabindex="-1" aria-labelledby="exampleModalgridLabel" aria-modal="true">
                           <div class="modal-dialog">
@@ -183,7 +197,7 @@
                                         <label class="form-label">Estado</label>
                                         <select class="form-select" formControlName="idEstado">
                                           <option  disabled selected>Seleccione un estado</option>
-                                          <option  *ngFor="let estado of this.estadosCanchas" value="{{estado.id_estado_cancha}}">{{estado.nombre_estado}}</option>
+                                          <option  *ngFor="let estado of this.estadosCanchas" value="{{estado.id_estado_cancha}}">{{estado.nombre}}</option>
                                         </select>
                                         <small class="text-info">Seleccione si desea cambiar el estado de la cancha, en caso contrario no seleccione</small>                                          
                                       </div>
@@ -203,11 +217,13 @@
                       </td> <!-- end-boton-modificar -->
                     </tr>
                   </tbody>
-                </table>
-            </div>
-            <div class="d-grid gap-2">
+                </table> <!-- Fin table -->
+              </div>
+              </div>
+            <div class="d-grid gap-2 mb-3">
               <button type="button" class="btn btn-outline-success" (click)="cambiarPagina('A')" >+ Agregar cancha</button>
             </div>
+          </div>
         </div>
     </div>
 </div>

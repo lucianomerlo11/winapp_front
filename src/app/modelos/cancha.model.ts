@@ -1,5 +1,6 @@
 export class CanchaModel{
     id_cancha;
+    numero_cancha;
     descripcion: string;
     foto: string;
     tipoCancha: {
@@ -14,7 +15,7 @@ export class CanchaModel{
     complejo: {
       id_complejo
     };
-    esActivo;
+    //esActivo;
   
     constructor(){}
   }

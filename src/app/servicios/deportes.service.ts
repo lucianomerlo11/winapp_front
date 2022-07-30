@@ -8,10 +8,11 @@ import { DeporteModel } from '../modelos/deporte.model';
 })
 export class DeportesService {
 
+  url: string = 'https://winapprest.herokuapp.com/deporte'
   constructor(private http: HttpClient) { }
 
   getDeportes(){
-    return this.http.get('http://localhost:8080/deporte/getall')
+    return this.http.get(`${this.url}/getall`)
       .pipe(
         map(resp => this.crearArregloDeportes(resp))
       )

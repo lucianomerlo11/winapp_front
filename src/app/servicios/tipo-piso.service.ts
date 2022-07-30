@@ -8,10 +8,11 @@ import { map } from 'rxjs/operators';
 })
 export class TipoPisoService {
 
+  url: string = 'https://winapprest.herokuapp.com/tipopiso'
   constructor(private http: HttpClient) { }
 
   getTiposDePiso(){
-      return this.http.get("http://localhost:8080/tipopiso/getall")
+      return this.http.get(`${this.url}/getall`)
         .pipe(
           map(this.crearArregloTipoPiso)
         )

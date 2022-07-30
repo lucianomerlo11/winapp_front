@@ -8,17 +8,18 @@ import { map } from 'rxjs/operators';
 })
 export class TipoCanchaService {
 
+  url: string = 'https://winapprest.herokuapp.com/tipocancha'
   constructor(private http: HttpClient) { }
 
   getTipoCanchaByDeporte(idDeporte){
-    return this.http.get(`http://localhost:8080/tipocancha/getbydeporte/${idDeporte}`)
+    return this.http.get(`${this.url}/getbydeporte/${idDeporte}`)
       .pipe(
         map(resp => this.crearArregloTiposCancha(resp))
       )
   }
 
   getTiposDeCancha(){
-    return this.http.get('http://localhost:8080/tipocancha/getall')
+    return this.http.get(`${this.url}/getall`)
     .pipe(
       map(resp => this.crearArregloTiposCancha(resp))
     )

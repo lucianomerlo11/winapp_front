@@ -13,6 +13,7 @@ import { TipoPisoModel } from 'src/app/modelos/tipoPiso.model';
 import { AlertasService } from 'src/app/servicios/alertas.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { EstadoService } from 'src/app/servicios/estado.service';
+import Swal from 'sweetalert2';
 
 
 @Component({
@@ -25,7 +26,7 @@ export class GestionDeCanchaComponent implements OnInit {
   
   // Atributo para cambio de pagina
   accionABMC: string = 'C';
-
+  misCanchas: boolean = false
   idComplejo: any;
   
   // Formulario para consultar las canchas del complejo
@@ -91,22 +92,24 @@ export class GestionDeCanchaComponent implements OnInit {
         this.deportes = resp
       })
       // Realizo una carga de todas las canchas del complejo sin realizar filtros
-      this.cargarCanchas(this.idComplejo)
+      this.cargarCanchas()
   }
 
 
   cambiarPagina(accion: string){
     if (accion == 'C') {
-      this.cargarCanchas(this.idComplejo)
+      this.cargarCanchas()
     }
     this.accionABMC = accion;
     
   }
 
-  cargarCanchas(id_complejo){
+  cargarCanchas(){
+    let id_complejo =  this.idComplejo
     this.canchasServices.getCanchas(id_complejo).subscribe(resp => {
       this.todasLasCanchas = resp
     })
+    this.misCanchas = false
   }
 
   /**
@@ -124,6 +127,19 @@ export class GestionDeCanchaComponent implements OnInit {
     })
     this.canchasServices.getCanchas(this.idComplejo).subscribe(resp => {
         this.todasLasCanchas = resp.filter(c => c.tipoCancha.deporte.id_deporte == deporte)
+        if (this.todasLasCanchas.length == 0) {
+          Swal.fire({
+            title: 'No hay canchas registradas para el deporte seleccionado',
+            icon: 'info'
+          })
+          this.cargarCanchas()
+          this.formularioConsultarCancha.controls['deporte'].reset()
+          this.formularioConsultarCancha.controls['tipoCancha'].disable()
+          this.misCanchas = false
+        }
+        else{
+          this.misCanchas = true;
+        }
     })
   }
   
@@ -135,6 +151,18 @@ export class GestionDeCanchaComponent implements OnInit {
       this.todasLasCanchas = resp.filter(c => 
         c.tipoCancha.deporte.id_deporte == deporte &&
         c.tipoCancha.id_tipo_cancha == tipoCancha)
+      
+        if (this.todasLasCanchas.length == 0) {
+          Swal.fire({
+            title: 'No hay canchas registradas para el tipo de cancha seleccionado',
+            icon: 'info'
+          })
+          this.cargarCanchas()
+          this.formularioConsultarCancha.controls['tipoCancha'].reset()
+          this.misCanchas = false
+        }else{
+          this.misCanchas = true
+        }
     })
   }
 
@@ -172,16 +200,21 @@ export class GestionDeCanchaComponent implements OnInit {
   // REALIZA LA CREACION DEL FORMULARIO PARA CREAR CANCHAS
   crearFormularioRegistrarCancha(){
     this.formularioRegistrarCancha = this.fb.group({
-      deporte     : ['', Validators.required],
-      tipoCancha  : ['', Validators.required],
-      tipoPiso    : ['', Validators.required],
-      descripcion : ['', Validators.required],
-      fotos       : ['', [Validators.required, this.validarExtension.extensionesDeImagenesValidas]],
+      nroCancha   : ['', [Validators.required, Validators.minLength(1), Validators.maxLength(2), Validators.min(1)]],
+      deporte     : ['',  Validators.required],
+      tipoCancha  : ['',  Validators.required],
+      tipoPiso    : ['',  Validators.required],
+      descripcion : ['',  Validators.required],
+      fotos       : ['', [this.validarExtension.extensionesDeImagenesValidas]],
     });
   }
 
   // VALIDACIONES REGISTRAR CANCHA
 
+  get nroCanchaNoValido(){
+    return this.formularioRegistrarCancha.get('nroCancha')?.invalid && this.formularioRegistrarCancha.get('nroCancha')?.touched
+    
+  }
   get deporteNoValido(){
       return this.formularioRegistrarCancha.get('deporte')?.invalid && this.formularioRegistrarCancha.get('deporte')?.touched
     }
@@ -213,28 +246,55 @@ export class GestionDeCanchaComponent implements OnInit {
     const {id} = this.idComplejo
     let datosFormularios: any = this.formularioRegistrarCancha.value;
 
-    const {descripcion, fotos, tipoCancha, tipoPiso} = datosFormularios
+    const {descripcion,nroCancha, fotos, tipoCancha, tipoPiso} = datosFormularios
 
     const cancha:CanchaModel = {
-      id_cancha: null,
+      complejo: {
+        id_complejo: parseInt(id)
+      },
       descripcion: descripcion,
-      foto: null,
-      tipoCancha: {id_tipo_cancha: parseInt(tipoCancha)},
-      tipoPiso: {id_tipo_piso: parseInt(tipoPiso)},
-      estadoCancha: {id_estado_cancha: 1},
-      complejo: {id_complejo: id},
-      esActivo: true
+      estadoCancha: {
+        id_estado_cancha: 4
+      },
+      foto: this.archivos[0],
+      numero_cancha: nroCancha,
+      tipoCancha: {
+        id_tipo_cancha: parseInt(tipoCancha)
+      },
+      tipoPiso: {
+        id_tipo_piso: parseInt(tipoPiso)
+      },
+      id_cancha: null,
     }
-    
-    this.canchasServices.registarCanchaRequest(cancha).subscribe(resp => {
-      resp ? this.alertaService.notificacionRegistrarCancha(resp) :
-      this.alertaService.notificacionRegistrarCancha(false)
+
+    Swal.fire({
+      title: 'Esta seguro de agregar una nueva cancha?',
+      showDenyButton: true,
+      confirmButtonText: 'Agregar cancha',
+      denyButtonText: 'Cancelar'
+    }).then((resolve) => {
+      if(resolve.isConfirmed){
+        this.canchasServices.registarCanchaRequest(cancha).subscribe(resp => {
+          this.alertaService.notificacionRegistrarCancha(true)
+          // resp ? this.alertaService.notificacionRegistrarCancha(resp) :
+          // this.alertaService.notificacionRegistrarCancha(false)
+        })
+      }else{
+        Swal.fire({
+          title: 'Registración cancelada',
+          icon: 'error'
+        })
+        this.cerrarModal()
+      }
     })
     this.vaciarFormularioRegistrarCancha()
 }
 
   vaciarFormularioRegistrarCancha(){
-    this.formularioRegistrarCancha.reset()
+    let form = this.formularioRegistrarCancha
+    form.reset()
+    form.controls['tipoCancha'].disable()
+    form.controls['tipoPiso'].disable()
     this.archivos = []
   }
 
@@ -274,12 +334,11 @@ export class GestionDeCanchaComponent implements OnInit {
     this.getTodosTiposPiso()
     this.getEstadosCancha()
     this.cargarDatosFormModificarCancha(cancha)
-    this.formularioModificarCancha.controls['nroCancha'].disable()
   }
   
   
   cargarDatosFormModificarCancha(cancha:any){
-    this.formularioModificarCancha.controls['nroCancha'].reset(cancha.id_cancha)
+    this.formularioModificarCancha.controls['nroCancha'].reset(cancha.numero_cancha)
     this.formularioModificarCancha.controls['descripcion'].reset(cancha.descripcion)
     this.formularioModificarCancha.controls['idTipoCancha'].setValue(cancha.tipoCancha.id_tipo_cancha)
     this.formularioModificarCancha.controls['id_tipo_piso'].setValue(cancha.tipoPiso.id_tipo_piso)
@@ -288,7 +347,7 @@ export class GestionDeCanchaComponent implements OnInit {
 
   cerrarModal(){
     this.modal.dismissAll()
-    this.cargarCanchas(this.idComplejo)
+    this.cargarCanchas()
   }
 
   crearFormularioModificarCancha(){
@@ -320,31 +379,71 @@ export class GestionDeCanchaComponent implements OnInit {
   }
 
   modificarCancha(canchaAnterior: any){
-    console.log(this.formularioModificarCancha.value)
 
-    const {idTipoCancha, descripcion, id_tipo_piso, idEstado} = this.formularioModificarCancha.value
-    console.log(id_tipo_piso)
+    const {idTipoCancha, nroCancha, descripcion, id_tipo_piso, idEstado} = this.formularioModificarCancha.value
     const cancha: CanchaModel = {
+      complejo: {id_complejo: parseInt(this.idComplejo.id)},
       id_cancha: canchaAnterior.id_cancha,
+      numero_cancha: nroCancha,
       descripcion: descripcion == '' || null ?  canchaAnterior.descripcion : descripcion,
       foto: null,
       tipoCancha: {id_tipo_cancha: idTipoCancha == '' || idTipoCancha == null ? canchaAnterior.tipoCancha.id_tipo_cancha : idTipoCancha },
       tipoPiso: {id_tipo_piso: id_tipo_piso == '' || id_tipo_piso == null ? canchaAnterior.tipoPiso.id_tipo_piso : id_tipo_piso},
-      estadoCancha: {id_estado_cancha: idEstado == '' || idEstado == null ? canchaAnterior.estadoCancha.id_estado_cancha : idEstado},
-      complejo: {id_complejo: parseInt(this.idComplejo.id)},
-      esActivo: true 
+      estadoCancha: {id_estado_cancha: idEstado == '' || idEstado == null ? canchaAnterior.estadoCancha.id_estado_cancha : idEstado}
     }
 
-    this.canchasServices.modicarCanchaRequest(cancha).subscribe(resp => {
-      this.alertaService.notificacionModificarCancha(resp)
-      this.cerrarModal()
+    Swal.fire({
+      title: "Esta seguro que desea modificar la cancha?",
+      showDenyButton: true, 
+      confirmButtonText: 'Modificar cancha',
+      denyButtonText: 'Cancelar'
+    }).then((resolve) => {
+      if(resolve.isConfirmed){
+        this.canchasServices.modicarCanchaRequest(cancha).subscribe(resp => {
+          // this.alertaService.notificacionModificarCancha(resp)
+          this.cerrarModal()
+        })
+        Swal.fire({
+          title: "Cancha modificada",
+          icon: 'success'
+        })
+      }
+      else{
+        Swal.fire({
+          title: 'Modificación cancelada',
+          icon: 'error'
+        })
+        this.cerrarModal()
+      }
     })
+
 
   }
 
   eliminarCancha(idCancha: any){
-    this.canchasServices.eliminarCanchaRequest(idCancha).subscribe(resp => {
-      this.cargarCanchas(this.idComplejo)
+    Swal.fire({
+      title: "Esta seguro que desea eliminar esta cancha?",
+      showDenyButton: true,
+      confirmButtonText: "Eliminar cancha",
+      denyButtonText: "Cancelar"
+    }).then((resultado) => {
+      
+      if(resultado.isConfirmed){
+        this.canchasServices.eliminarCanchaRequest(idCancha).subscribe(resp => {
+          Swal.close()
+          this.cargarCanchas()
+        })
+        Swal.fire({
+          title: "Cancha eliminada",
+          icon: 'success'
+        }) 
+      }
+      else{
+        Swal.fire({
+          title: "Eliminación cancelada",
+          icon: 'error'
+        })
+      }
     })
   }
 

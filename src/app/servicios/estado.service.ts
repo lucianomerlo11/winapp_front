@@ -6,11 +6,12 @@ import { map } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class EstadoService {
-
+ 
+  url: string = 'https://winapprest.herokuapp.com/estadocancha'
   constructor(private http: HttpClient) { }
 
   getEstadosCancha(){
-    return this.http.get('http://localhost:8080/estadocancha/getall').pipe(
+    return this.http.get(`${this.url}/getall`).pipe(
       map(this.crearArregloEstado)
     )
   }
