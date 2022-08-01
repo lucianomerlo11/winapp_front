@@ -12,6 +12,8 @@ import lottie from 'lottie-web';
 import { DropzoneModule } from 'ngx-dropzone-wrapper';
 import { DROPZONE_CONFIG } from 'ngx-dropzone-wrapper';
 import { DropzoneConfigInterface } from 'ngx-dropzone-wrapper';
+// Pagination
+import { NgxPaginationModule } from 'ngx-pagination';
 import { GestionarUsuarioComponent } from './gestionar-usuario/gestionar-usuario.component';
 import { GestionDeCanchaComponent } from './gestion-de-canchas/gestion-de-canchas.component';
 
@@ -33,7 +35,8 @@ const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface = {
     FormsModule,
     ReactiveFormsModule,
     NgbNavModule,
-    DropzoneModule
+    DropzoneModule,
+    NgxPaginationModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

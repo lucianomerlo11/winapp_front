@@ -50,25 +50,12 @@
               <small *ngIf="descripcionNoValida" class="text-danger">Debe ingresar una descripcion</small>
             </div>
           </div>
-            <!-- Cargar de imagenes -->
-            <div class="mb-3">
-              <label for="imagenCancha" class="form-label color-text">Cargar fotos de cancha</label>
-              <input class="form-control" type="file" id="imagenCancha" (change)="capturarImagen($event)" formControlName="fotos"/>
-              <small *ngIf="fotosNoValidas" class="text-danger">Debe ingresar al menos una imagen con formato <b>.png, .jpg o .jpeg</b></small>
-            </div>
-            
-            <div class="imagenes" *ngIf="previzualizacion" formArrayName="fotos">
-              <div class="mt-2 img" *ngFor="let file of this.archivos; let i = index">
-                <img width="200px" height="200px" [src]="file" alt="">
-                <button type="button" class="btn btn-outline-danger mt-1" (click)="eliminarImagen(i)">Eliminar imagen</button>
-              </div>
-            </div>  
+          <div class="btnRegistrarCancha mt-3">
+            <!-- Boton registrar cancha -->
+            <button type="button" class="btn btn-outline-primary" (click)="cambiarPagina('C')">Regresar</button>
+            <button type="submit" class="btn btn-primary" style="margin-left: 10px;">Registrar cancha</button>
+          </div> 
         </div>  
-        <div class="btnRegistrarCancha mt-3">
-          <!-- Boton registrar cancha -->
-          <button type="button" class="btn btn-outline-primary" (click)="cambiarPagina('C')">Regresar</button>
-          <button type="submit" class="btn btn-primary" style="margin-left: 10px;">Registrar cancha</button>
-        </div>
       </div>
     </div>
 </form>
@@ -86,35 +73,41 @@
             </div>
           <div class="card-body">
             <div class="consultarCancha">
-                <h3>Mostrar canchas por</h3>
                 <form  autocomplete="off" [formGroup]="formularioConsultarCancha">
-                  <div class="row mb-3">
-                    <div class="col-lg-3">
-                      <label for="nameInput" class="form-label">Deporte</label>
+
+                  <div class="row g-4 mb-3 justify-content-between">
+                    
+                    <div class="col-md-auto">
+                      <div class="d-flex gap-1">
+                        <button type="button" class="btn btn-outline-primary" (click)="cambiarPagina('A')" >+ Agregar cancha</button>                                        
+                      </div>
                     </div>
-                    <div class="col-lg-3">
-                      <select (change)="consultarCanchasPorDeporte($event)"  class="form-select" aria-label=".form-select-sm example" formControlName="deporte">
-                        <option value="{{0}}" disabled selected>Seleccione un deporte</option>
-                        <option value="{{deporte.id_deporte}}" *ngFor="let deporte of this.deportes">{{deporte.nombre}}</option>
-                      </select>
+                    <div class="col-md-auto">
+                      <div class="d-flex gap-1">
+                        <select (change)="consultarCanchasPorDeporte($event)"  class="form-select" aria-label=".form-select-sm example" formControlName="deporte">
+                          <option value="{{0}}" disabled selected>Deporte</option>
+                          <option value="{{deporte.id_deporte}}" *ngFor="let deporte of this.deportes">{{deporte.nombre}}</option>
+                        </select>
+                      </div>
                     </div>
+                    <div class="col-md-auto">
+                      <div class="d-flex gap-1">
+                        <select class="form-select" aria-label=".form-select-sm example" formControlName="tipoCancha" (change)="consultarCanchasPorTipoDeCancha($event)">
+                          <option value="{{0}}" disabled selected>Tipo de cancha</option>
+                          <option value="{{tipoCancha.id_tipo_cancha}}" *ngFor="let tipoCancha of this.selectTipoCancha">{{tipoCancha.descripcion}}</option>
+                        </select> 
+                      </div>
+                    </div>
+                    
+                      <div *ngIf="misCanchas" class="col-md-auto">
+                        <div class="d-flex gap-1">
+                          <button type="button" class="btn btn-primary" (click)="cargarCanchas()">Ver mis canchas</button>
+                        </div>
+                      </div>
                   </div>
-                  <div class="row mb-3">
-                    <div class="col-lg-3">
-                      <label class="form-label">Tipo de cancha</label>
-                    </div>
-                    <div class="col-lg-3">
-                      <select class="form-select" aria-label=".form-select-sm example" formControlName="tipoCancha" (change)="consultarCanchasPorTipoDeCancha($event)">
-                        <option value="{{0}}" disabled selected>Seleccione un tipo de cancha</option>
-                        <option value="{{tipoCancha.id_tipo_cancha}}" *ngFor="let tipoCancha of this.selectTipoCancha">{{tipoCancha.descripcion}}</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div *ngIf="misCanchas" class="row mb-3">
-                    <div class="col-md-3">
-                      <button type="button" class="btn btn-primary" (click)="cargarCanchas()">Ver mis canchas</button>
-                    </div>
-                  </div>
+
+
+                  
                 </form>  
             </div>
             <div *ngIf="this.todasLasCanchas.length == 0" class="alert alert-warning text-center mt-3">
@@ -133,7 +126,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr *ngFor="let canchasComplejo of this.todasLasCanchas">
+                    <tr *ngFor="let canchasComplejo of this.todasLasCanchas | paginate: {itemsPerPage: 5, currentPage: p}">
                       <td style="text-align: center;">{{canchasComplejo.numero_cancha}}</td>
                       <td style="text-align: center;">{{canchasComplejo.tipoCancha.deporte.nombre}}</td>
                       <td style="text-align: center;">{{canchasComplejo.tipoCancha.descripcion}}</td>
@@ -169,8 +162,7 @@
                                           <select class="form-select" name="tipoCancha" formControlName="idTipoCancha">
                                             <option  disabled selected>Seleccione un tipo de cancha</option>
                                             <option  *ngFor="let tipoCancha of this.todosTiposDeCancha" value="{{tipoCancha.id_tipo_cancha}}">{{tipoCancha.descripcion}}</option>
-                                          </select>
-                                          <small class="text-info">Seleccione si desea modificar el tipo de cancha, en caso contrario no seleccione</small>
+                                          </select>                                          
                                       </div>
                                     </div><!--end col-->
                                     <div class="col-lg-12">
@@ -179,16 +171,14 @@
                                         <select class="form-select" name="id_tipo_piso" formControlName="id_tipo_piso">
                                           <option  disabled selected>Seleccione un tipo de piso</option>
                                           <option  *ngFor="let piso of this.todosTiposDePiso" value="{{piso.id_tipo_piso}}">{{piso.nombre}}</option>
-                                        </select>
-                                        <small class="text-info">Seleccione si desea modificar el tipo de piso, en caso contrario no seleccione</small>
+                                        </select>                                        
                                       </div>
                                     </div><!--end col-->
                                     <div class="col-lg-12">
                                       <div>
                                         <label class="form-label color-text">Descripción</label>
                                         <div class="form-floating">
-                                          <textarea class="form-control" style="height: 100px" formControlName="descripcion"></textarea>          
-                                          <small class="text-info">Modificar si desea cambiar la descripcion, en caso contrario no modifique</small>
+                                          <textarea class="form-control" style="height: 100px" formControlName="descripcion"></textarea>                                                    
                                         </div>
                                       </div>
                                     </div>
@@ -199,7 +189,6 @@
                                           <option  disabled selected>Seleccione un estado</option>
                                           <option  *ngFor="let estado of this.estadosCanchas" value="{{estado.id_estado_cancha}}">{{estado.nombre}}</option>
                                         </select>
-                                        <small class="text-info">Seleccione si desea cambiar el estado de la cancha, en caso contrario no seleccione</small>                                          
                                       </div>
                                     </div><!--end col-->
                                     <div class="col-lg-12">
@@ -219,10 +208,20 @@
                   </tbody>
                 </table> <!-- Fin table -->
               </div>
+              <div class="paginacion">
+                <pagination-controls (pageChange)="p = $event"
+                                      [maxSize]="maxSize"
+                                      [directionLinks]="directionLinks"
+                                      [autoHide]="autoHide"
+                                      [responsive]="responsive" 
+                                      [previousLabel]="labels.previousLabel"
+                                      [nextLabel]="labels.nextLabel"
+                                      [screenReaderPaginationLabel]="labels.screenReaderPaginationLabel"
+                                      [screenReaderPageLabel]="labels.screenReaderPageLabel"
+                                      [screenReaderCurrentLabel]="labels.screenReaderCurrentLabel"
+                                      ></pagination-controls>                  
               </div>
-            <div class="d-grid gap-2 mb-3">
-              <button type="button" class="btn btn-outline-success" (click)="cambiarPagina('A')" >+ Agregar cancha</button>
-            </div>
+              </div>
           </div>
         </div>
     </div>

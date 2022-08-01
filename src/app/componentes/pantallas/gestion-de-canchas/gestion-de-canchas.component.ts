@@ -2,8 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CanchaModel } from 'src/app/modelos/cancha.model';
 import { CanchasService } from 'src/app/servicios/canchas.service';
-import { ImagenesService } from 'src/app/servicios/imagenes.service';
-import { ValidacionesService } from 'src/app/servicios/validaciones.service';
 import { ActivatedRoute } from '@angular/router';
 import { DeportesService } from 'src/app/servicios/deportes.service';
 import { TipoCanchaService } from 'src/app/servicios/tipo-cancha.service';
@@ -24,6 +22,9 @@ import Swal from 'sweetalert2';
 export class GestionDeCanchaComponent implements OnInit {
 
   
+  //Paginación
+  p: number = 1
+
   // Atributo para cambio de pagina
   accionABMC: string = 'C';
   misCanchas: boolean = false
@@ -36,7 +37,6 @@ export class GestionDeCanchaComponent implements OnInit {
   consultaPorPadel: boolean = false;
   todasLasCanchas: any[] = [];
   selectTipoCancha: any[] = []
-  consultarCancha(){}
   
   //Formulario modificar cancha
   formularioModificarCancha: FormGroup;
@@ -50,13 +50,19 @@ export class GestionDeCanchaComponent implements OnInit {
   tiposCancha!: TipoCanchaModel[];
   tiposPisos!: TipoPisoModel[];
 
-  //Atributos para trabajar con imagenes
-  public archivos: string[] = []; 
-  public previzualizacion!: string;
+  public maxSize: number = 7;
+  public directionLinks: boolean = true;
+  public autoHide: boolean = true;
+  public responsive: boolean = true;
+  public labels: any = {
+      previousLabel: 'Anterior',
+      nextLabel: 'Siguiente',
+      screenReaderPaginationLabel: 'Pagination',
+      screenReaderPageLabel: 'page',
+      screenReaderCurrentLabel: `You're on page`
+  };
 
   constructor(private fb: FormBuilder,
-              private imagenesServices: ImagenesService,
-              private validarExtension: ValidacionesService,
               private canchasServices: CanchasService,
               private deportesServices: DeportesService,
               private tiposCanchasServices: TipoCanchaService,
@@ -86,11 +92,13 @@ export class GestionDeCanchaComponent implements OnInit {
   }
   
   ngOnInit(): void {
+
       // Realizo la carga del select para la selección de deportes
-      this.deportesServices.getDeportes().subscribe(resp => {
-        
+      this.deportesServices.getDeportes().subscribe(resp => {        
         this.deportes = resp
       })
+      this.formularioConsultarCancha.controls['deporte'].setValue(0)
+      this.formularioConsultarCancha.controls['tipoCancha'].setValue(0)
       // Realizo una carga de todas las canchas del complejo sin realizar filtros
       this.cargarCanchas()
   }
@@ -106,8 +114,11 @@ export class GestionDeCanchaComponent implements OnInit {
 
   cargarCanchas(){
     let id_complejo =  this.idComplejo
+    this.formularioConsultarCancha.controls['deporte'].setValue(0)
+    this.formularioConsultarCancha.controls['tipoCancha'].setValue(0)
+    this.formularioConsultarCancha.controls['tipoCancha'].disable()
     this.canchasServices.getCanchas(id_complejo).subscribe(resp => {
-      this.todasLasCanchas = resp
+      this.todasLasCanchas = resp.sort( (a: any, b:any) => a.numero_cancha - b.numero_cancha)
     })
     this.misCanchas = false
   }
@@ -127,6 +138,7 @@ export class GestionDeCanchaComponent implements OnInit {
     })
     this.canchasServices.getCanchas(this.idComplejo).subscribe(resp => {
         this.todasLasCanchas = resp.filter(c => c.tipoCancha.deporte.id_deporte == deporte)
+                                .sort( (a: any, b:any) => a.numero_cancha - b.numero_cancha)
         if (this.todasLasCanchas.length == 0) {
           Swal.fire({
             title: 'No hay canchas registradas para el deporte seleccionado',
@@ -134,6 +146,7 @@ export class GestionDeCanchaComponent implements OnInit {
           })
           this.cargarCanchas()
           this.formularioConsultarCancha.controls['deporte'].reset()
+          this.formularioConsultarCancha.controls['deporte'].setValue(0)
           this.formularioConsultarCancha.controls['tipoCancha'].disable()
           this.misCanchas = false
         }
@@ -151,6 +164,7 @@ export class GestionDeCanchaComponent implements OnInit {
       this.todasLasCanchas = resp.filter(c => 
         c.tipoCancha.deporte.id_deporte == deporte &&
         c.tipoCancha.id_tipo_cancha == tipoCancha)
+        .sort( (a: any, b:any) => a.numero_cancha - b.numero_cancha)
       
         if (this.todasLasCanchas.length == 0) {
           Swal.fire({
@@ -159,6 +173,10 @@ export class GestionDeCanchaComponent implements OnInit {
           })
           this.cargarCanchas()
           this.formularioConsultarCancha.controls['tipoCancha'].reset()
+          this.formularioConsultarCancha.controls['deporte'].reset()
+          this.formularioConsultarCancha.controls['deporte'].setValue(0)
+          this.formularioConsultarCancha.controls['tipoCancha'].setValue(0)
+          this.formularioConsultarCancha.controls['tipoCancha'].disable()
           this.misCanchas = false
         }else{
           this.misCanchas = true
@@ -204,8 +222,7 @@ export class GestionDeCanchaComponent implements OnInit {
       deporte     : ['',  Validators.required],
       tipoCancha  : ['',  Validators.required],
       tipoPiso    : ['',  Validators.required],
-      descripcion : ['',  Validators.required],
-      fotos       : ['', [this.validarExtension.extensionesDeImagenesValidas]],
+      descripcion : ['',  Validators.required]
     });
   }
 
@@ -231,10 +248,6 @@ export class GestionDeCanchaComponent implements OnInit {
       return this.formularioRegistrarCancha.get('descripcion')?.invalid && this.formularioRegistrarCancha.get('descripcion')?.touched
     }
 
-    get fotosNoValidas(){
-      return this.formularioRegistrarCancha.get('fotos')?.invalid && this.formularioRegistrarCancha.get('fotos')?.touched
-    }
-
   registrarCancha(){
 
     if (this.formularioRegistrarCancha.invalid) {
@@ -246,7 +259,7 @@ export class GestionDeCanchaComponent implements OnInit {
     const {id} = this.idComplejo
     let datosFormularios: any = this.formularioRegistrarCancha.value;
 
-    const {descripcion,nroCancha, fotos, tipoCancha, tipoPiso} = datosFormularios
+    const {descripcion, nroCancha, tipoCancha, tipoPiso} = datosFormularios
 
     const cancha:CanchaModel = {
       complejo: {
@@ -256,7 +269,7 @@ export class GestionDeCanchaComponent implements OnInit {
       estadoCancha: {
         id_estado_cancha: 4
       },
-      foto: this.archivos[0],
+      foto: null,
       numero_cancha: nroCancha,
       tipoCancha: {
         id_tipo_cancha: parseInt(tipoCancha)
@@ -276,6 +289,7 @@ export class GestionDeCanchaComponent implements OnInit {
       if(resolve.isConfirmed){
         this.canchasServices.registarCanchaRequest(cancha).subscribe(resp => {
           this.alertaService.notificacionRegistrarCancha(true)
+          this.cambiarPagina('C')
           // resp ? this.alertaService.notificacionRegistrarCancha(resp) :
           // this.alertaService.notificacionRegistrarCancha(false)
         })
@@ -285,6 +299,7 @@ export class GestionDeCanchaComponent implements OnInit {
           icon: 'error'
         })
         this.cerrarModal()
+        this.cambiarPagina('C')
       }
     })
     this.vaciarFormularioRegistrarCancha()
@@ -295,29 +310,6 @@ export class GestionDeCanchaComponent implements OnInit {
     form.reset()
     form.controls['tipoCancha'].disable()
     form.controls['tipoPiso'].disable()
-    this.archivos = []
-  }
-
-  /**
-   * Logica para obtener y visualizar imagen
-   **/
-
-  capturarImagen(event:any): any{
-    const archivoCapturado = event.target.files[0];
-    if(this.validarExtension.validarExtensionImagen(archivoCapturado?.name) == false){
-      return;
-    }
-    else{
-        this.imagenesServices.extraerBase64(archivoCapturado).then((imagen: any) => {
-        this.previzualizacion = imagen.base;
-        this.archivos.push(imagen.base)
-      }) 
-    }
-  }
-
-  // ESTE METODO SE ENCARGA DE ELIMINAR CADA IMAGEN QUE SE HA SELECCIONADO
-  eliminarImagen(imagen: number){
-    this.archivos.splice(imagen, 1)
   }
 
   /**
@@ -445,10 +437,5 @@ export class GestionDeCanchaComponent implements OnInit {
         })
       }
     })
-  }
-
-  habilitarCancha(cancha: any){
-    cancha.esActivo = true
-    this.canchasServices.modicarCanchaRequest(cancha).subscribe()
   }
 }
