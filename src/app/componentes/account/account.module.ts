@@ -7,6 +7,8 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { defineLordIconElement } from 'lord-icon-element';
 import lottie from 'lottie-web';
 
+import { FlatpickrModule } from 'angularx-flatpickr';
+
 import { AccountRoutingModule } from './account-routing.module';
 import { LoginComponent } from './login/login.component';
 import { RegistrarseComponent } from './registrarse/registrarse.component';
@@ -21,7 +23,8 @@ import { RegistrarseComponent } from './registrarse/registrarse.component';
     CommonModule,
     ReactiveFormsModule,
     FormsModule,
-    AccountRoutingModule
+    AccountRoutingModule,
+    FlatpickrModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

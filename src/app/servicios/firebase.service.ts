@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { first } from 'rxjs/operators';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 
 @Injectable({
@@ -14,7 +15,6 @@ export class FirebaseService {
     }
     catch(err) {
       console.log(err);
-      return null;
     }
   }
 
@@ -24,12 +24,11 @@ export class FirebaseService {
     }
     catch(err) {
       console.log(err);
-      return null;
     }
   }
 
   getUserLogged(){
-    return this.authFB.authState;
+    return this.authFB.authState.pipe(first()).toPromise();
   }
 
   logout(){

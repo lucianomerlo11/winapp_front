@@ -1,5 +1,8 @@
 import { Component, EventEmitter, OnInit, Output, Inject } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
+import { FirebaseService } from 'src/app/servicios/firebase.service';
+import { UsuariosService } from 'src/app/servicios/usuarios.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-topbar',
@@ -8,18 +11,37 @@ import { DOCUMENT } from '@angular/common';
 })
 export class TopbarComponent implements OnInit {
 
-  element: any;
-  mode: string | undefined;
   @Output() mobileMenuButtonClicked = new EventEmitter();
 
+  mode: string | undefined;
+  element: any;
   flagvalue: any;
   valueset: any;
   countryName: any;
   cookieValue: any;
+
+  clienteLogueado: any;
   
-  constructor(@Inject(DOCUMENT) private document: any) { }
+  constructor(@Inject(DOCUMENT) private document: any,
+              private router: Router,
+              private fireService: FirebaseService,
+              private usuarioService: UsuariosService) { }
 
   ngOnInit(): void {
+    this.obtenerUsuarioLogueado();
+  }
+
+  async obtenerUsuarioLogueado(){
+    const user = await this.fireService.getUserLogged();
+    if (user) {
+      if (user?.displayName == null) {
+        this.usuarioService.getUsuarioById(user?.uid).subscribe((res: any) => {
+          if (res) {
+            this.clienteLogueado = res;
+          }
+        })
+      }
+    }
   }
 
   /**
@@ -70,12 +92,8 @@ export class TopbarComponent implements OnInit {
    * Logout the user
    */
   logout() {
-    // if (environment.defaultauth === 'firebase') {
-    //   this.authService.logout();
-    // } else {
-    //   this.authFackservice.logout();
-    // }
-    // this.router.navigate(['/auth/login']);
+    this.fireService.logout();
+    this.router.navigate(['/auth/login']);
   }
 
   /**

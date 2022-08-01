@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { FirebaseService } from 'src/app/servicios/firebase.service';
 
 @Component({
   selector: 'app-login',
@@ -22,52 +23,34 @@ export class LoginComponent implements OnInit {
   year: number = new Date().getFullYear();
 
   constructor(private formBuilder: FormBuilder,
-              // private authenticationService: AuthenticationService,
               private router: Router,
-              // private authFackservice: AuthfakeauthenticationService,
-              private route: ActivatedRoute,) {
-      // if (this.authenticationService.currentUserValue) {
-      //   this.router.navigate(['/']);
-      // }
-    }
+              private route: ActivatedRoute,
+              private fireSerivce: FirebaseService) {}
 
   ngOnInit(): void {
     this.loginForm = this.formBuilder.group({
-      email: ['admin@themesbrand.com', [Validators.required, Validators.email]],
-      password: ['123456', [Validators.required]],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required]],
     });
-
-    // get return url from route parameters or default to '/'
-    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
   }
 
   // convenience getter for easy access to form fields
   get f() { return this.loginForm.controls; }
 
-  /**
-   * Form submit
-   */
-   onSubmit() {
+  login() {
     this.submitted = true;
-    // stop here if form is invalid
     if (this.loginForm.invalid) {
       return;
-    } else {
-      // if (environment.defaultauth === 'firebase') {
-      //   this.authenticationService.login(this.f['email'].value, this.f['password'].value).then((res: any) => {
-      //     this.router.navigate(['/']);
-      //   })
-      //     .catch(error => {
-      //       this.error = error ? error : '';
-      //     });
-      // } else {
-      //   this.authFackservice.login(this.f['email'].value, this.f['password'].value).pipe(first()).subscribe(data => {
-      //         this.router.navigate(['/']);
-      //       },
-      //       error => {
-      //         this.error = error ? error : '';
-      //       });
-      // }
+    } 
+    else {
+      this.fireSerivce.login(this.loginForm.value.email, this.loginForm.value.password).then((res: any) => {
+        if (res) {
+          this.router.navigate(['/ag/']);
+        }
+      })
+        .catch(err => {
+          console.log(err.error.errors.message);
+        });
     }
   }
 

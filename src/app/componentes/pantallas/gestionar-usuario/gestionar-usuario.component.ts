@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FirebaseService } from 'src/app/servicios/firebase.service';
 import { UsuariosService } from 'src/app/servicios/usuarios.service';
 
 @Component({
@@ -8,18 +9,21 @@ import { UsuariosService } from 'src/app/servicios/usuarios.service';
 })
 export class GestionarUsuarioComponent implements OnInit {
 
-  Lista: any;
-  constructor(private usuarioService: UsuariosService) { }
+  clienteLogueado: any;
+  constructor(private usuarioService: UsuariosService,
+              private fireService: FirebaseService) { }
 
   ngOnInit(): void {
     this.getDatosUsuario();
   }
 
-  getDatosUsuario(){
-    this.usuarioService.getUsuarioById(1)
+  async getDatosUsuario(){
+    const user = await this.fireService.getUserLogged();
+    if (user){
+      this.usuarioService.getUsuarioById(user?.uid)
       .subscribe((res: any) => {
-        this.Lista = res;
-        const texto = "Hola";
+        this.clienteLogueado = res;
       })
+    }
   }
 }

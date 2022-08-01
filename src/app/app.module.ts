@@ -8,6 +8,11 @@ import { LayoutModule } from './componentes/layout/layout.module';
 import { PantallasModule } from './componentes/pantallas/pantallas.module';
 import { AngularFireModule } from '@angular/fire/compat';
 import { environment } from 'src/environments/environment';
+import { AngularFireAuthModule } from '@angular/fire/compat/auth';
+// FlatPicker
+import { FlatpickrModule } from 'angularx-flatpickr';
+import { defineLordIconElement } from 'lord-icon-element';
+import lottie from 'lottie-web';
 
 @NgModule({
   declarations: [
@@ -19,9 +24,15 @@ import { environment } from 'src/environments/environment';
     AppRoutingModule,
     LayoutModule,
     PantallasModule,
-    AngularFireModule.initializeApp(environment.firebaseConfig)
+    AngularFireModule.initializeApp(environment.firebaseConfig),
+    AngularFireAuthModule,
+    FlatpickrModule.forRoot(),
   ],
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule { 
+  constructor() {
+    defineLordIconElement(lottie.loadAnimation);
+  }
+}

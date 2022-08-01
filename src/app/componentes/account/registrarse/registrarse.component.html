@@ -30,29 +30,14 @@
             <div class="row justify-content-center">
                 <div class="col-md-8 col-lg-6 col-xl-5">
                     <div class="card">
-  
                         <div class="card-body p-4">
                             <div class="text-center mt-2">
                                 <h5 class="text-primary">Creá tu cuenta</h5>
                                 <p class="text-muted">Y empezá a buscar tu próximo partido</p>
                             </div>
                             <div class="p-2 mt-4">
-                                <form [formGroup]="FormReg" (ngSubmit)="onSubmit()">
+                                <form [formGroup]="FormReg">
   
-                                    <div class="mb-3">
-                                        <label for="useremail" class="form-label">Email <span class="text-danger">*</span></label>
-                                        <input type="email" class="form-control" id="useremail" placeholder="Ingrese su email" required formControlName="email" [ngClass]="{ 'is-invalid': submitted && f['email'].errors }">
-                                        <div class="invalid-feedback">
-                                            Dato requerido
-                                        </div>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="username" class="form-label">Teléfono <span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" id="telefono" placeholder="Ingrese su número" required formControlName="telefono" [ngClass]="{ 'is-invalid': submitted && f['telefono'].errors }">
-                                        <div class="invalid-feedback">
-                                            Dato requerido
-                                        </div>
-                                    </div>
                                     <div class="mb-3">
                                         <label for="username" class="form-label">Nombre <span class="text-danger">*</span></label>
                                         <input type="text" class="form-control" id="nombre" placeholder="Ingrese su nombre" required formControlName="nombre" [ngClass]="{ 'is-invalid': submitted && f['nombre'].errors }">
@@ -67,7 +52,34 @@
                                             Dato requerido
                                         </div>
                                     </div>
-  
+                                    <div class="mb-3">
+                                        <label for="tipoDoc" class="form-label">Tipo Documento</label>
+                                        <select class="form-control" name="tipoDoc" formControlName="idTipoDocumento">
+                                            <option [value]="null"></option>
+                                            <option *ngFor="let opt of tiposDocumento" [value]="opt.id_tipo_documento">
+                                                {{ opt.nombre }}
+                                            </option>         
+                                        </select>                                
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="username" class="form-label">Nro. Documento</label>
+                                        <input type="text" class="form-control" id="documento" placeholder="Ingrese su número sin puntos" formControlName="nroDocumento">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="fecNacimiento" class="form-label">Fecha de Nacimiento</label>
+                                        <input class="form-control flatpickr-input" type="text" formControlName="fechaNacimiento" placeholder="Seleccione una Fecha" mwlFlatpickr [altInput]="true" [convertModelValue]="true">   
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="username" class="form-label">Teléfono</label>
+                                        <input type="text" class="form-control" id="telefono" placeholder="Ingrese su número" formControlName="telefono">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="useremail" class="form-label">Email <span class="text-danger">*</span></label>
+                                        <input type="email" class="form-control" id="useremail" placeholder="Ingrese su email" required formControlName="email" [ngClass]="{ 'is-invalid': submitted && f['email'].errors }">
+                                        <div class="invalid-feedback">
+                                            Dato requerido
+                                        </div>
+                                    </div>
                                     <div class="mb-2">
                                         <label for="userpassword" class="form-label">Contraseña <span class="text-danger">*</span></label>
                                         <input type="password" class="form-control" id="userpassword" placeholder="Ingrese su contraseña" required formControlName="password" [ngClass]="{ 'is-invalid': submitted && f['password'].errors }">
@@ -75,13 +87,11 @@
                                             Dato requerido
                                         </div>
                                     </div>
-  
                                     <div class="mb-4">
                                         <p class="mb-0 fs-12 text-muted fst-italic">Al registrarse en Win acepta los <a href="javascript:void(0);" class="text-primary text-decoration-underline fst-normal fw-medium">Terminos de uso</a></p>
                                     </div>
-  
                                     <div class="mt-4">
-                                        <button class="btn btn-primary w-100" (click)="registrar()">Registrarme</button>
+                                        <button class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#success-Payment"  (click)="registrar(modalExito)">Registrarme</button>
                                     </div>
   
                                     <!-- <div class="mt-4 text-center">
@@ -129,5 +139,27 @@
         </div>
     </footer>
     <!-- end Footer -->
-  </div>
-  <!-- end auth-page-wrapper -->  
+</div>
+<!-- end auth-page-wrapper -->  
+<ng-template #modalExito let-modal>
+    <div class="modal-content">
+        <div class="modal-body text-center p-5">
+            <div class="text-end">
+                <button type="button" class="btn-close text-end" data-bs-dismiss="modal" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+            </div>
+            <div class="mt-2">
+                <lord-icon src="https://cdn.lordicon.com/tqywkdcz.json" trigger="hover"
+                    style="width:150px;height:150px">
+                </lord-icon>
+                <h4 class="mb-3 mt-4">Felicitaciones!</h4>
+                <p class="text-muted fs-15 mb-4">Su cuenta fue creada correctamente. Ahora puedes usar Win!</p>
+                <div class="hstack gap-2 justify-content-center">
+                    <button class="btn btn-primary" (click)="iniciarSesion()">Ingresar al sistema</button>
+                    <a class="btn btn-soft-success" routerLink="/auth/login">Volver al inicio</a>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer bg-light p-3 justify-content-center">
+        </div>
+    </div><!-- /.modal-content -->
+</ng-template>
