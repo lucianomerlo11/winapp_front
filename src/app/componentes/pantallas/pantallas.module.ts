@@ -13,6 +13,7 @@ import { DropzoneModule } from 'ngx-dropzone-wrapper';
 import { DROPZONE_CONFIG } from 'ngx-dropzone-wrapper';
 import { DropzoneConfigInterface } from 'ngx-dropzone-wrapper';
 import { GestionarUsuarioComponent } from './gestionar-usuario/gestionar-usuario.component';
+import { FlatpickrModule } from 'angularx-flatpickr';
 
 const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface = {
   url: 'https://httpbin.org/post',
@@ -31,7 +32,8 @@ const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface = {
     FormsModule,
     ReactiveFormsModule,
     NgbNavModule,
-    DropzoneModule
+    DropzoneModule,
+    FlatpickrModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

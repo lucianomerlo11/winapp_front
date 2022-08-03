@@ -22,4 +22,8 @@ export class UsuariosService {
   setupPantalla() {
     return this.httpClient.get(this.url + "tipodocumento/getall");
   }
+
+  modificarCliente(Cliente: any) {
+    return this.httpClient.post(this.url + "cliente/update", Cliente);
+  }
 }

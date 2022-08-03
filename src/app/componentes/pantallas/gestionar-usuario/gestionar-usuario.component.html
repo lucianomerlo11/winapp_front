@@ -21,12 +21,12 @@
       </div><!--end col-->
   </div><!--end row-->
 </div>
-<div class="row">
+<div class="row" *ngIf="AccionABMC == 'C'">
     <div class="col-lg-12">
         <div class="d-flex">
             <div>
                 <div class="flex-shrink-0">
-                    <a routerLink="/pages/profile-setting" class="btn btn-primary"><i class="ri-edit-box-line align-bottom"></i> Edit Profile</a>
+                    <button class="btn btn-primary" (click)="editarPerfil()"><i class="ri-edit-box-line align-bottom"></i> Edit Profile</button>
                 </div>
             </div>
         </div>
@@ -39,15 +39,15 @@
                         <table class="table table-borderless mb-0">
                             <tbody>
                                 <tr>
-                                    <th class="ps-0" scope="row">Nombre y Apellido:</th>
+                                    <th class="ps-0 columna-label" scope="row">Nombre y Apellido:</th>
                                     <td class="text-muted">{{clienteLogueado?.nombre}} {{clienteLogueado?.apellido}}</td>
                                 </tr>
                                 <tr>
-                                    <th class="ps-0" scope="row">Teléfono:</th>
+                                    <th class="ps-0 columna-label" scope="row">Teléfono:</th>
                                     <td class="text-muted">{{clienteLogueado?.telefono}}</td>
                                 </tr>
                                 <tr>
-                                    <th class="ps-0" scope="row">E-mail:</th>
+                                    <th class="ps-0 columna-label" scope="row">E-mail:</th>
                                     <td class="text-muted">{{clienteLogueado?.email}}</td>
                                 </tr>
                             </tbody>
@@ -57,24 +57,204 @@
             </div><!-- end card -->
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title mb-3">Datos Jugador</h5>
+                    <h5 class="card-title mb-3">Información personal</h5>
                     <div class="table-responsive">
                         <table class="table table-borderless mb-0">
                             <tbody>
                                 <tr>
-                                    <th class="ps-0" scope="row">Deporte:</th>
-                                    <td class="text-muted">Fútbol</td>
+                                    <th class="ps-0 columna-label" scope="row">Tipo de documento:</th>
+                                    <td class="text-muted">{{clienteLogueado?.tipo_documento?.nombre}}</td>
                                 </tr>
                                 <tr>
-                                    <th class="ps-0" scope="row">Puesto:</th>
-                                    <td class="text-muted">Volante</td>
+                                    <th class="ps-0 columna-label" scope="row">Número de documento:</th>
+                                    <td class="text-muted">{{clienteLogueado?.numero_documento}}</td>
+                                </tr>
+                                <tr>
+                                    <th class="ps-0 columna-label" scope="row">Fecha de nacimiento:</th>
+                                    <td class="text-muted">{{clienteLogueado?.fecha_nacimiento | date:'dd/MM/yyyy'}}</td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
                 </div><!-- end card body -->
             </div><!-- end card -->
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title mb-3">Datos Jugador</h5>
+                    <div class="table-responsive" *ngIf="clienteLogueado?.esJugador">
+                        <table class="table table-borderless mb-0">
+                            <tbody>
+                                <tr>
+                                    <th class="ps-0 columna-label" scope="row">Deporte:</th>
+                                    <td class="text-muted">Fútbol</td>
+                                </tr>
+                                <tr>
+                                    <th class="ps-0 columna-label" scope="row">Puesto:</th>
+                                    <td class="text-muted">Volante</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- Primary Alert -->
+                    <div class="alert alert-primary alert-dismissible alert-additional fade show" *ngIf="!clienteLogueado?.esJugador" role="alert">
+                        <div class="alert-body">
+                            <div class="d-flex">
+                                <div class="flex-shrink-0 me-3">
+                                    <i class="ri-emotion-unhappy-line fs-16 align-middle"></i>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <h5 class="alert-heading">Aún no eres un jugador Win!</h5>
+                                    <p class="mb-0">Te recomendamos registrarte como un "Jugador Win" de tu deporte para poder acceder a busquedas mas rápidas y de tu interés! </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="alert-content" style="text-align: center !important;">
+                            <button class="btn btn-light" (click)="editarPerfil()">Quiero ser Jugador!</button>
+                        </div>
+                    </div>
+                </div><!-- end card body -->
+            </div><!-- end card -->
         </div>
     </div>
 </div>
+<!-- Edicion -->
+<div class="row" *ngIf="AccionABMC == 'M'">
+    <div class="col-lg-12">
+        <div class="d-flex">
+            <div>
+                <div class="flex-shrink-0">
+                    <button class="btn btn-primary" (click)="guardar(modalExito)"><i class="ri-check-line align-bottom"></i> Guardar</button>
+                    &nbsp;
+                    <button class="btn btn-primary" (click)="cancelar()"><i class="ri-close-line align-bottom"></i> Cancelar</button>
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title mb-3">Información de perfil</h5>
+                <form [formGroup]="FormReg">
+                    <div class="row">
+                        <div class="col-sm-4 col-md-1">
+                            <label for="nombre" class="form-label">Nombre: </label>
+                        </div>
+                        <div class="mb-3 col-sm-8 col-md-4">
+                            <input type="text" class="form-control" id="nombre" formControlName="nombre">
+                        </div>
+                        <div class="col-sm-4 col-md-1">
+                            <label for="apellido" class="form-label">Apellido: </label>
+                        </div>
+                        <div class="mb-3 col-sm-8 col-md-4">
+                            <input type="text" class="form-control" id="apellido" formControlName="apellido">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-4 col-md-1">
+                            <label for="telefono" class="form-label">Teléfono: </label>
+                        </div>
+                        <div class="mb-3 col-sm-8 col-md-4">
+                            <input type="text" class="form-control" id="telefono" formControlName="telefono">
+                        </div>
+                        <div class="col-sm-4 col-md-1">
+                            <label for="email" class="form-label">E-mail: </label>
+                        </div>
+                        <div class="mb-3 col-sm-8 col-md-4">
+                            <input type="text" class="form-control" id="email" formControlName="email">
+                        </div>
+                    </div>
+                </form>
+            </div><!-- end card body -->
+        </div><!-- end card -->
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title mb-3">Información personal</h5>
+                <form [formGroup]="FormReg">
+                    <div class="row">
+                        <div class="col-sm-4 col-md-1">
+                            <label for="tipoDoc" class="form-label">Tipo de documento: </label>
+                        </div>
+                        <div class="mb-3 col-sm-8 col-md-4">
+                            <select class="form-control" name="tipoDoc" formControlName="id_tipo_documento">
+                                <option [value]="null"></option>
+                                <option *ngFor="let opt of tiposDocumento" [value]="opt.id_tipo_documento">
+                                    {{ opt.nombre }}
+                                </option>         
+                            </select>  
+                        </div>
+                        <div class="col-sm-4 col-md-1">
+                            <label for="nroDoc" class="form-label">Número de documento: </label>
+                        </div>
+                        <div class="mb-3 col-sm-8 col-md-4">
+                            <input type="text" class="form-control" id="nroDoc" formControlName="numero_documento">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-4 col-md-1">
+                            <label for="fechaNacimiento" class="form-label">Fecha de nacimiento: </label>
+                        </div>
+                        <div class="mb-3 col-sm-8 col-md-4">
+                            <input class="form-control flatpickr-input" type="text" formControlName="fecha_nacimiento" mwlFlatpickr [altInput]="true" [convertModelValue]="true">
+                        </div>
+                    </div>
+                </form>
+            </div><!-- end card body -->
+        </div><!-- end card -->
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title mb-3">Datos Jugador</h5>
+                <form [formGroup]="FormJugador">
+                    <div class="row">
+                        <div class="col-sm-4 col-md-1">
+                            <label for="deporte" class="form-label">Deporte: </label>
+                        </div>
+                        <div class="mb-3 col-sm-8 col-md-4">
+                            <select class="form-control" name="deporte" formControlName="idDeporte">
+                                <option [value]="null"></option>
+                                <option *ngFor="let opt of deportes" [value]="opt.id_deporte">
+                                    {{ opt.nombre }}
+                                </option>         
+                            </select>
+                        </div>
+                        <div class="col-sm-4 col-md-1">
+                            <label for="apellido" class="form-label">Puesto: </label>
+                        </div>
+                        <div class="mb-3 col-sm-8 col-md-4">
+                            <select class="form-control" name="deporte" formControlName="idPuesto">
+                                <option [value]="null"></option>
+                                <option *ngFor="let opt of puestosDeporte" [value]="opt.id_puesto">
+                                    {{ opt.nombre }}
+                                </option>         
+                            </select>
+                        </div>
+                    </div>
+                </form>
+                
+                <div class="table-responsive">
+                </div>
+            </div><!-- end card body -->
+        </div><!-- end card -->
+    </div>
+</div>
+
+<ng-template #modalExito let-modal>
+    <div class="modal-content">
+        <div class="modal-body text-center p-5">
+            <div class="text-end">
+                <button type="button" class="btn-close text-end" data-bs-dismiss="modal" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+            </div>
+            <div class="mt-2">
+                <lord-icon src="https://cdn.lordicon.com/tqywkdcz.json" trigger="hover"
+                    style="width:150px;height:150px">
+                </lord-icon>
+                <h4 class="mb-3 mt-4">Éxito!</h4>
+                <p class="text-muted fs-15 mb-4">Sus datos fueron modificados correctamente!</p>
+                <div class="hstack gap-2 justify-content-center">
+                    <button class="btn btn-primary" (click)="cancelar()">Aceptar</button>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer bg-light p-3 justify-content-center">
+        </div>
+    </div><!-- /.modal-content -->
+</ng-template>
 
